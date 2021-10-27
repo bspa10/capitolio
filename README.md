@@ -1,2 +1,3 @@
-# capitorio
-Java Game Engine
+# Capitólio
+
+A lwjgl-base game engine
