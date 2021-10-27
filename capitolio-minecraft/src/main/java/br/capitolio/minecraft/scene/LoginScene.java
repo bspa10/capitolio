@@ -8,9 +8,9 @@ import br.capitolio.engine.GameState;
 import br.capitolio.engine.graphics.Mesh;
 import br.capitolio.engine.graphics.RGBA;
 import br.capitolio.engine.graphics.Vertex;
-import br.capitolio.engine.math.Vector3f;
 import br.capitolio.engine.scene.GameObject;
 import br.capitolio.engine.scene.Scene;
+import org.joml.Vector3f;
 
 public class LoginScene extends Scene {
 

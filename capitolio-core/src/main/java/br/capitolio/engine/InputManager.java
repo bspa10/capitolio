@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
 public abstract class InputManager {
-
     private static final ConcurrentMap<KeyCode, KeyboardHandler> keyboard = new ConcurrentHashMap<>();
     private static final ConcurrentMap<KeyCode, MouseKeyHandler> mouse = new ConcurrentHashMap<>();
     private static final Queue<MousePositionHandler> position = new ConcurrentLinkedQueue<>();

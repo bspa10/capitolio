@@ -1,10 +1,10 @@
 package br.capitolio.engine;
 
 import br.capitolio.engine.scene.Scene;
+import org.joml.Vector2i;
 
 public abstract class Settings {
     private Settings() {}
-
 
     private static String windowTitle = "Game";
     public static void setWindowTitle(String windowTitle) {
@@ -14,12 +14,14 @@ public abstract class Settings {
         return Settings.windowTitle;
     }
 
-    private static final int[] windowSize = new int[]{ 640, 480 };
-    public static void setWindowSize(int width, int height) {
-        Settings.windowSize[0] = width;
-        Settings.windowSize[1] = height;
+    private static final Vector2i windowSize = new Vector2i(640, 480);
+    public static void setWindowSize(Vector2i size) {
+        Settings.windowSize.set(size);
     }
-    public static int[] getWindowSize() {
+    public static void setWindowSize(int width, int height) {
+        Settings.windowSize.set(width, height);
+    }
+    public static Vector2i getWindowSize() {
         return Settings.windowSize;
     }
 

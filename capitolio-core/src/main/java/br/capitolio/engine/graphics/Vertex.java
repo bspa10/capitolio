@@ -1,6 +1,6 @@
 package br.capitolio.engine.graphics;
 
-import br.capitolio.engine.math.Vector3f;
+import org.joml.Vector3f;
 
 public final class Vertex {
     private final Vector3f position;

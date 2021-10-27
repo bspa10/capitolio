@@ -1,12 +1,12 @@
 package br.capitolio.engine.graphics;
 
-import br.capitolio.engine.math.Vector3f;
+import org.joml.Vector3f;
 
 public final class Transform {
 
-    private final Vector3f position = Vector3f.zero;
-    private final Vector3f rotation = Vector3f.zero;
-    private final Vector3f scale = Vector3f.one;
+    private final Vector3f position = new Vector3f();
+    private final Vector3f rotation = new Vector3f();
+    private final Vector3f scale = new Vector3f(1.0f, 1.0f, 1.0f);
 
     public Vector3f getPosition() {
         return position;

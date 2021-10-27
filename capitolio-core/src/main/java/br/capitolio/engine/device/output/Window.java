@@ -1,17 +1,12 @@
 package br.capitolio.engine.device.output;
 
 import br.capitolio.engine.graphics.RGBA;
+import org.joml.Vector2i;
 
 /**
  * Displayable window of the game.
  */
 public interface Window {
-
-    static Window create() {
-        return null;
-    }
-
-    long getIdentity();
 
     String getTitle();
     void setTitle(String title);
@@ -20,13 +15,8 @@ public interface Window {
     void show();
     void hide();
 
-    /**
-     * size[0] = width
-     * <br>
-     * size[1] = height
-     */
-    int[] getSize();
-    void setSize(int width, int height);
+    Vector2i getSize();
+    void setSize(Vector2i size);
 
     void render();
     void destroy();

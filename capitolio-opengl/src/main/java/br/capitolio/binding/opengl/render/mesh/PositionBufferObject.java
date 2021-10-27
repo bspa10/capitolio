@@ -12,9 +12,9 @@ public class PositionBufferObject extends VertexBufferObject {
         final var data = new float[vertices.length * SIZE];
 
         for (int i = 0; i < vertices.length; i++) {
-            data[i * SIZE] = vertices[i].getPosition().getX();
-            data[i * SIZE + 1] = vertices[i].getPosition().getY();
-            data[i * SIZE + 2] = vertices[i].getPosition().getZ();
+            data[i * SIZE] = vertices[i].getPosition().x;
+            data[i * SIZE + 1] = vertices[i].getPosition().y;
+            data[i * SIZE + 2] = vertices[i].getPosition().z;
         }
 
         buffer.put(data);

@@ -12,8 +12,8 @@ public class TextureBufferObject extends VertexBufferObject {
         final var data = new float[vertices.length * SIZE];
 
         for (int i = 0; i < vertices.length; i++) {
-            data[i * SIZE] = vertices[i].getPosition().getX();
-            data[i * SIZE + 1] = vertices[i].getPosition().getY();
+            data[i * SIZE] = vertices[i].getPosition().x;
+            data[i * SIZE + 1] = vertices[i].getPosition().y;
         }
 
         buffer.put(data);

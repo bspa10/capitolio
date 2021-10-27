@@ -6,17 +6,18 @@ import br.capitolio.engine.Settings;
 import br.capitolio.engine.InputManager;
 import br.capitolio.engine.device.output.Window;
 import br.capitolio.engine.graphics.RGBA;
-import br.capitolio.engine.math.Vector2d;
+import org.joml.Vector2d;
+import org.joml.Vector2i;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 public class GLWindow implements Window {
     private final long identity;
-    private final int[] size = Settings.getWindowSize();
+    private final Vector2i size = Settings.getWindowSize();
 
     private GLWindow() {
-        identity = GLFW.glfwCreateWindow(size[0], size[1], Settings.getWindowTitle(), 0, 0);
+        identity = GLFW.glfwCreateWindow(size.x, size.y, Settings.getWindowTitle(), 0, 0);
 
         if (identity == 0)
             throw new GLException("Unable to create window");
@@ -75,11 +76,6 @@ public class GLWindow implements Window {
         });
     }
 
-    @Override
-    public long getIdentity() {
-        return identity;
-    }
-
     public String getTitle() {
         return Settings.getWindowTitle();
     }
@@ -103,16 +99,14 @@ public class GLWindow implements Window {
         GLFW.glfwHideWindow(identity);
     }
 
-    public int[] getSize() {
+    public Vector2i getSize() {
         return size;
     }
 
     @Override
-    public void setSize(int width, int height) {
-        size[0] = width;
-        size[1] = height;
-
-        Settings.setWindowSize(width, height);
+    public void setSize(Vector2i size) {
+        this.size.set(size);
+        Settings.setWindowSize(size);
     }
 
     public void render() {
