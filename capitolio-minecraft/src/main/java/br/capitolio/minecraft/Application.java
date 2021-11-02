@@ -1,36 +1,19 @@
 package br.capitolio.minecraft;
 
-import br.capitolio.binding.OpenglModule;
-import br.capitolio.engine.RenderManager;
-import br.capitolio.engine.Settings;
-import br.capitolio.engine.Game;
-import br.capitolio.engine.system.Capitolio;
-import br.capitolio.engine.render.ShaderType;
-import br.capitolio.minecraft.scene.LoginScene;
-import br.capitolio.tools.FileUtils;
-
-import java.util.concurrent.Executors;
+import br.capitolio.engine.EngineManager;
+import br.capitolio.framework.cdi.Injector;
+import br.capitolio.framework.cdi.context.DefaultContext;
+import br.capitolio.binding.GLBinding;
 
 public class Application {
 
-    public static void main(String[] args) throws InterruptedException {
-        Capitolio.getInstance().load(OpenglModule.class);
+    public static void main(String[] args) {
+        DefaultContext.load(GLBinding.class);
+        DefaultContext.load(GameModule.class);
 
-        Settings.setWindowTitle("Minecraft");
-        Settings.setWindowSize(1024, 768);
-        Settings.setStartScene(LoginScene.class);
+        final var engine = Injector.inject(EngineManager.class);
 
-        RenderManager.setShader(ShaderType.VERTEX, FileUtils.load("shaders/vertex.glsl"));
-        RenderManager.setShader(ShaderType.FRAGMENT, FileUtils.load("shaders/fragment.glsl"));
-
-        final var game = new Game();
-        final var executor = Executors.newSingleThreadExecutor();
-        executor.execute(game::run);
-        executor.shutdown();
-
-        while (! executor.isTerminated()) {
-            Thread.sleep(250L);
-        }
+        engine.start();
     }
 
 }
