@@ -13,7 +13,7 @@ public class VertexBufferObject {
     private Integer identity;
 
     protected void setIdentity(int identity) {
-        LOGGER.debug("Create VBO [{}]", identity);
+        LOGGER.debug("Create VBO [{}]", getClass().getSimpleName());
         this.identity = identity;
     }
 
@@ -25,16 +25,16 @@ public class VertexBufferObject {
         if (identity == null)
             return;
 
-        LOGGER.debug("Destroying VBO [{}]", identity);
+        LOGGER.debug("Destroying VBO [{}]", getClass().getSimpleName());
         GL15.glDeleteBuffers(identity);
         identity = null;
     }
 
-    protected void storeDate(FloatBuffer buffer, int index, int size) {
+    protected void storeDate(FloatBuffer buffer, int attrNo, int size) {
         final var bufferId = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferId);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-        GL20.glVertexAttribPointer(index, size, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(attrNo, size, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         setIdentity(bufferId);
