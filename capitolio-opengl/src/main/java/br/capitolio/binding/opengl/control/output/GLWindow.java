@@ -1,18 +1,24 @@
-package br.capitolio.binding.opengl;
+package br.capitolio.binding.opengl.control.output;
 
+import br.capitolio.binding.opengl.GLException;
 import br.capitolio.engine.EngineSettings;
-import br.capitolio.engine.WindowManager;
+import br.capitolio.control.output.Window;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public final class GLWindowManager extends WindowManager {
+public final class GLWindow extends Window {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GLWindow.class);
+
+    private GLWindow(){}
 
     @Override
-    public void init() {
+    protected void doInit() {
         final var callback = GLFWErrorCallback.createPrint(System.err);
         GLFW.glfwSetErrorCallback(callback);
 
@@ -41,15 +47,15 @@ public final class GLWindowManager extends WindowManager {
         if (window == MemoryUtil.NULL)
             throw new GLException("Unable to create window");
 
-        GLFW.glfwSetFramebufferSizeCallback(window, (window, width, heigth) -> {
-            windowSize.set(width, heigth);
+        GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
+            LOGGER.debug("<Window> Resized ({}, {})", width, height);
+            windowSize.set(width, height);
             resize = true;
         });
 
         GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-           if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE) {
+           if (key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE)
                GLFW.glfwSetWindowShouldClose(window, true);
-           }
         });
 
         if (maximized)
@@ -63,9 +69,6 @@ public final class GLWindowManager extends WindowManager {
         }
 
         GLFW.glfwMakeContextCurrent(window);
-
-        if (vsync)
-            GLFW.glfwSwapInterval(1);
 
         GL.createCapabilities();
         GLFW.glfwShowWindow(window);
@@ -90,7 +93,7 @@ public final class GLWindowManager extends WindowManager {
         GLFW.glfwPollEvents();
     }
 
-    public void cleanup() {
+    public void doCleanup() {
         GLFW.glfwDestroyWindow(window);
     }
 

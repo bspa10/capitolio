@@ -1,9 +1,14 @@
 package br.capitolio.engine;
 
-import br.capitolio.engine.renderer.RenderManager;
+import br.capitolio.control.output.Window;
+import br.capitolio.engine.render.Renderer;
+import br.capitolio.engine.scene.Scene;
 import br.capitolio.framework.cdi.Injector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class EngineManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EngineManager.class);
     public static final long NANOSECOND= 1000000000L;
     public static final long FRAMERATE = 1000L;
 
@@ -11,24 +16,25 @@ public abstract class EngineManager {
     protected static float frametime = 1.0f / FRAMERATE;
     protected boolean running;
 
-    private final RenderManager render = Injector.inject(RenderManager.class);
-    private final WindowManager window = Injector.inject(WindowManager.class);
-    private final GameLogic gameLogic = Injector.inject(GameLogic.class);
+    private final Scene scene = Injector.inject(Scene.class);
+    private final Renderer render = Injector.inject(Renderer.class);
+    private final Window window = Injector.inject(Window.class);
+
     protected abstract void doStart();
-
     public final void start() {
-        window.init();
-        render.setWindow(window);
-
-        gameLogic.setWindow(window);
-        gameLogic.setRenderer(render);
-        gameLogic.init();
-
-        doStart();
-
         if (running)
             return;
 
+        LOGGER.info("Starting the Game Engine");
+        render.setWindow(window);
+        scene.setWindow(window);
+        scene.setRenderer(render);
+
+        window.init();
+        render.init();
+        scene.init();
+
+        doStart();
         run();
     }
 
@@ -36,6 +42,7 @@ public abstract class EngineManager {
         if (!running)
             return;
 
+        LOGGER.info("Stopping the Game Engine");
         running = false;
     }
 
@@ -47,18 +54,18 @@ public abstract class EngineManager {
         var unprocessedTime = 0.0;
 
         while (running) {
-            var render = false;
+            var shouldRender = false;
             var startTime = System.nanoTime();
             var passedTime = startTime - lastTime;
             lastTime = startTime;
 
+            // Frame elapsed time
             unprocessedTime += passedTime / (double) NANOSECOND;
             frameCounter += passedTime;
 
-            input();
-
+            processPlayerInput();
             while (unprocessedTime  > frametime) {
-                render = true;
+                shouldRender = true;
                 unprocessedTime -= frametime;
 
                 if (window.shouldClose())
@@ -72,7 +79,7 @@ public abstract class EngineManager {
                 }
             }
 
-            if (render) {
+            if (shouldRender) {
                 update();
                 render();
                 frames++;
@@ -82,25 +89,27 @@ public abstract class EngineManager {
         cleanup();
     }
 
-    public void input() {
-        gameLogic.input();
+    public void processPlayerInput() {
+        scene.input();
     }
 
     public void update() {
-        gameLogic.update();
+        scene.update();
         window.update();
     }
 
     public void render() {
-        gameLogic.render();
+        scene.render();
         window.render();
     }
 
     protected abstract void doCleanup();
     public final void cleanup() {
-        doCleanup();
+        LOGGER.debug("Releasing resources");
+        scene.cleanup();
+        render.cleanup();
         window.cleanup();
-        gameLogic.cleanup();
+        doCleanup();
     }
 
 }

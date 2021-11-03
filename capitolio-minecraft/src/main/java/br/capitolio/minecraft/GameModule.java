@@ -1,15 +1,16 @@
 package br.capitolio.minecraft;
 
-import br.capitolio.engine.GameLogic;
+import br.capitolio.engine.scene.Scene;
 import br.capitolio.framework.cdi.annotation.Module;
 import br.capitolio.framework.cdi.annotation.Provider;
+import br.capitolio.minecraft.scene.WorldScene;
 
 @Module
 public class GameModule {
 
     @Provider(overridable = false)
-    public GameLogic gameLogic() {
-        return new Game();
+    public Scene gameLogic() {
+        return new WorldScene();
     }
 
 }

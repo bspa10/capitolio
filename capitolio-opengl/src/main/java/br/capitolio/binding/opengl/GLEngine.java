@@ -4,8 +4,10 @@ import br.capitolio.engine.EngineManager;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-public class GLEngineManager extends EngineManager {
+public final class GLEngine extends EngineManager {
     private GLFWErrorCallback errorCallback;
+
+    private GLEngine(){}
 
     @Override
     protected void doStart() {

@@ -1,11 +1,16 @@
-package br.capitolio.engine;
+package br.capitolio.control.output;
 
+import br.capitolio.engine.EngineSettings;
 import lombok.Getter;
 import org.joml.Math;
 import org.joml.Matrix4f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Getter
-public abstract class WindowManager {
+public abstract class Window {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Window.class);
+
     public static final float FOV = (float) Math.toRadians(60);
     public static final float Z_NEAR = 0.01f;
     public static final float Z_FAR = 1000f;
@@ -15,7 +20,7 @@ public abstract class WindowManager {
     protected boolean resize, vsync;
     protected final Matrix4f projection;
 
-    public WindowManager() {
+    public Window() {
         projection = new Matrix4f();
     }
 
@@ -23,13 +28,21 @@ public abstract class WindowManager {
 
     public abstract void setBgColor(float red, float green, float blue, float alfa);
 
-    public abstract void init();
+    protected abstract void doInit();
+    public final void init() {
+        LOGGER.debug("Initializing");
+        doInit();
+    }
 
     public abstract void render();
 
     public abstract void update();
 
-    public abstract void cleanup();
+    protected abstract void doCleanup();
+    public final void cleanup() {
+        LOGGER.debug("Destroying");
+        doCleanup();
+    }
 
     public abstract boolean isKeyPressed(int keycode);
 

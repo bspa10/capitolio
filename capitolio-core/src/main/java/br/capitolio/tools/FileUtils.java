@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 
 public class FileUtils {
 
+    private FileUtils(){}
+
     public static InputStream stream(String path) {
         return Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
     }

@@ -44,6 +44,7 @@ public abstract class Injector {
         for (var context : contexts) {
             final var target = context.get(klass);
             if (target != null) {
+                LOGGER.debug("Injecting [{}]", target.getClass().getCanonicalName());
                 return target;
             }
         }
