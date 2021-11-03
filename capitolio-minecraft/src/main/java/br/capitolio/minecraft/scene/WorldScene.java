@@ -22,9 +22,9 @@ public class WorldScene extends Scene {
                         new Vertex(0.5f, -0.5f, 0f, RGBA.BLUE),
                         new Vertex(0.5f, -0.5f, 0f, RGBA.BLUE),
                         new Vertex(0.5f, 0.5f, 0f, RGBA.GREEN),
-                        new Vertex(-0.5f, 0.5f, 0f, RGBA.GREEN)
+                        new Vertex(-0.5f, 0.5f, 0f, RGBA.RED)
                 },
-                new int[] {0, 1, 2, 0, 3, 2}
+                new int[] {0, 1, 3, 3, 1, 2}
         );
 
         final var cube = new GameObject();

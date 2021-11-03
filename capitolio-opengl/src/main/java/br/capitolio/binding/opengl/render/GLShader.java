@@ -71,7 +71,6 @@ public final class GLShader {
         GL20.glValidateProgram(pid);
         if (GL20.glGetProgrami(pid, GL20.GL_VALIDATE_STATUS) == GL11.GL_FALSE)
             throw new GLException("Unable validating shader code: %s".formatted(GL20.glGetProgramInfoLog(pid, 1024)));
-
     }
 
     public void bind() {
