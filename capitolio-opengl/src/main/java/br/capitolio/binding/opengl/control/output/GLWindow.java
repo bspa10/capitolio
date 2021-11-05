@@ -48,7 +48,7 @@ public final class GLWindow extends Window {
             throw new GLException("Unable to create window");
 
         GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
-            LOGGER.debug("<Window> Resized ({}, {})", width, height);
+            LOGGER.debug("Resized (%s, %s)", width, height);
             windowSize.set(width, height);
             resize = true;
         });

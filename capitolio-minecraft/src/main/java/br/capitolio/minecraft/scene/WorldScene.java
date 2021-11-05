@@ -33,7 +33,7 @@ public class WorldScene extends Scene {
     }
 
     @Override
-    public void input() {
+    protected void doInput() {
         if (window.isKeyPressed(GLFW.GLFW_KEY_UP))
             direction += 1;
 
@@ -45,7 +45,7 @@ public class WorldScene extends Scene {
     }
 
     @Override
-    public void update() {
+    protected void doUpdate() {
         colour += direction * 0.001f;
         if (colour > 1)
             colour = 1;
@@ -55,12 +55,12 @@ public class WorldScene extends Scene {
     }
 
     @Override
-    public void render() {
+    protected void doRender() {
         if (window.isResize())
             window.setViewPort(0, 0);
 
         window.setBgColor(colour, 0, colour, 0);
-        render.render(this);
+        renderer.render(this);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package br.capitolio.engine;
 
+import br.capitolio.engine.core.AbstractSettings;
 import br.capitolio.engine.logging.Logger;
 import br.capitolio.engine.logging.LoggerFactory;
 import org.joml.Vector2i;
 
-public abstract class EngineSettings {
+public abstract class EngineSettings extends AbstractSettings {
     private static final Logger LOGGER = LoggerFactory.getLogger(EngineSettings.class);
 
     private EngineSettings(){}

@@ -1,9 +1,10 @@
 package br.capitolio.binding.opengl;
 
+import br.capitolio.engine.core.AbstractSettings;
 import br.capitolio.engine.logging.Logger;
 import br.capitolio.engine.logging.LoggerFactory;
 
-public abstract class GLSettings {
+public abstract class GLSettings extends AbstractSettings {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLSettings.class);
 
     private GLSettings() {}

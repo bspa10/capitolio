@@ -3,11 +3,9 @@ package br.capitolio.engine;
 import br.capitolio.engine.core.control.output.Window;
 import br.capitolio.engine.logging.Logger;
 import br.capitolio.engine.logging.LoggerFactory;
-import br.capitolio.engine.platform.linux.PlatformLinuxModule;
 import br.capitolio.engine.render.Renderer;
 import br.capitolio.engine.core.scene.Scene;
 import br.capitolio.framework.cdi.Injector;
-import br.capitolio.framework.cdi.context.DefaultContext;
 
 public abstract class EngineManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EngineManager.class);
@@ -18,17 +16,16 @@ public abstract class EngineManager {
     protected static float frametime = 1.0f / FRAMERATE;
     protected boolean running;
 
-    private final Scene scene = Injector.inject(Scene.class);
+    private Scene scene;
     private final Renderer render = Injector.inject(Renderer.class);
     private final Window window = Injector.inject(Window.class);
 
     protected abstract void doStart();
-    public final void start() {
+    public final void start(Scene scene) {
         if (running)
             return;
 
         LOGGER.info("Starting the Game Engine");
-
         if (Injector.getModules().contains("br.capitolio.binding.GLBinding")) {
             LOGGER.info("Using OpenGL");
         }
@@ -40,6 +37,7 @@ public abstract class EngineManager {
         window.init();
         render.init();
         scene.init();
+        this.scene = scene;
 
         doStart();
         run();
@@ -96,22 +94,22 @@ public abstract class EngineManager {
         cleanup();
     }
 
-    public void processPlayerInput() {
+    private void processPlayerInput() {
         scene.input();
     }
 
-    public void update() {
+    private void update() {
         scene.update();
         window.update();
     }
 
-    public void render() {
+    private void render() {
         scene.render();
         window.render();
     }
 
     protected abstract void doCleanup();
-    public final void cleanup() {
+    private void cleanup() {
         LOGGER.debug("Releasing resources");
         scene.cleanup();
         render.cleanup();
