@@ -3,14 +3,13 @@ package br.capitolio.framework.cdi;
 import br.capitolio.framework.cdi.context.DefaultContext;
 import br.capitolio.framework.cdi.context.InjectionContext;
 import br.capitolio.tools.reflection.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class Injector {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Injector.class);
     private static final Queue<InjectionContext> contexts = new ConcurrentLinkedQueue<>();
 
     private Injector(){}
@@ -32,6 +31,13 @@ public abstract class Injector {
         contexts.add(context);
     }
 
+    public static Set<String> getModules() {
+        final var modules = new TreeSet<String>();
+        contexts.forEach(context -> modules.addAll(context.getModules()));
+
+        return modules;
+    }
+
     /**
      * Lookup a provider of the given class through the registered {@link InjectionContext}s.
      * <p>
@@ -44,7 +50,6 @@ public abstract class Injector {
         for (var context : contexts) {
             final var target = context.get(klass);
             if (target != null) {
-                LOGGER.debug("Injecting [{}]", target.getClass().getCanonicalName());
                 return target;
             }
         }

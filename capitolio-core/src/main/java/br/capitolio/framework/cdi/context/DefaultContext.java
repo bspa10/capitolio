@@ -4,18 +4,15 @@ import br.capitolio.framework.cdi.CDIException;
 import br.capitolio.framework.cdi.annotation.Module;
 import br.capitolio.framework.cdi.annotation.Provider;
 import br.capitolio.tools.reflection.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public final class DefaultContext implements InjectionContext {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultContext.class);
-
     private static final ConcurrentMap<String, Object> modules = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, Method> providers = new ConcurrentHashMap<>();
 
@@ -47,7 +44,6 @@ public final class DefaultContext implements InjectionContext {
             throw new CDIException("", "@Module annotation not present in [%s]".formatted(module.getClass().getCanonicalName()));
         }
 
-        LOGGER.info("Processing [%s] module".formatted(module.getClass().getCanonicalName()));
         final var found = Reflections.Classes.getMethods(module, Provider.class);
         if (found.isEmpty()) {
             throw new CDIException("", "No @Provider method found in [%s] module".formatted(module.getClass().getCanonicalName()));
@@ -59,7 +55,6 @@ public final class DefaultContext implements InjectionContext {
             modules.putIfAbsent(key, module);
 
             if (!providers.containsKey(key)) {
-                LOGGER.debug("Registering [%s].[%s] provider method".formatted(module.getClass().getCanonicalName(), method.getName()));
                 providers.putIfAbsent(key, method);
                 continue;
             }
@@ -87,11 +82,13 @@ public final class DefaultContext implements InjectionContext {
         return (T) Reflections.Methods.invoke(module, factory);
     }
 
-    public Collection<String> modules() {
-        return modules.keySet();
+    public Set<String> getModules() {
+        final var names = new TreeSet<String>();
+        modules.values().forEach(k -> names.add(k.getClass().getCanonicalName()));
+        return names;
     }
 
-    public Collection<String> providers() {
+    public Set<String> providers() {
         return providers.keySet();
     }
 }

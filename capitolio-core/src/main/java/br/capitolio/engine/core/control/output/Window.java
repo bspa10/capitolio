@@ -1,11 +1,11 @@
-package br.capitolio.control.output;
+package br.capitolio.engine.core.control.output;
 
 import br.capitolio.engine.EngineSettings;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import lombok.Getter;
 import org.joml.Math;
 import org.joml.Matrix4f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 public abstract class Window {

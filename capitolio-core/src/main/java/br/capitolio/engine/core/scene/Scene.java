@@ -1,9 +1,9 @@
-package br.capitolio.engine.scene;
+package br.capitolio.engine.core.scene;
 
-import br.capitolio.control.output.Window;
+import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import br.capitolio.engine.render.Renderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

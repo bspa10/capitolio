@@ -1,7 +1,7 @@
 package br.capitolio.binding.opengl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 
 public abstract class GLSettings {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLSettings.class);

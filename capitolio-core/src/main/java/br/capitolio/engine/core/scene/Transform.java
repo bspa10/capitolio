@@ -1,4 +1,4 @@
-package br.capitolio.engine.scene;
+package br.capitolio.engine.core.scene;
 
 import lombok.Getter;
 import org.joml.Vector3f;

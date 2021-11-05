@@ -1,11 +1,11 @@
 package br.capitolio.minecraft.scene;
 
-import br.capitolio.engine.graphics.Mesh;
-import br.capitolio.engine.graphics.ObjectLoader;
-import br.capitolio.engine.graphics.RGBA;
-import br.capitolio.engine.graphics.Vertex;
-import br.capitolio.engine.scene.GameObject;
-import br.capitolio.engine.scene.Scene;
+import br.capitolio.engine.core.graphics.Mesh;
+import br.capitolio.engine.core.graphics.ObjectLoader;
+import br.capitolio.engine.core.graphics.RGBA;
+import br.capitolio.engine.core.graphics.Vertex;
+import br.capitolio.engine.core.scene.GameObject;
+import br.capitolio.engine.core.scene.Scene;
 import org.lwjgl.glfw.GLFW;
 
 public class WorldScene extends Scene {

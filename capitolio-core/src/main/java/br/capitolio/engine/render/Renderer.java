@@ -1,11 +1,11 @@
 package br.capitolio.engine.render;
 
-import br.capitolio.control.output.Window;
-import br.capitolio.engine.graphics.Mesh;
-import br.capitolio.engine.scene.GameObject;
-import br.capitolio.engine.scene.Scene;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.graphics.Mesh;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
+import br.capitolio.engine.core.scene.GameObject;
+import br.capitolio.engine.core.scene.Scene;
 
 public abstract class Renderer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Renderer.class);

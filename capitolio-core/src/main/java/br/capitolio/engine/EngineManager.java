@@ -1,11 +1,13 @@
 package br.capitolio.engine;
 
-import br.capitolio.control.output.Window;
+import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
+import br.capitolio.engine.platform.linux.PlatformLinuxModule;
 import br.capitolio.engine.render.Renderer;
-import br.capitolio.engine.scene.Scene;
+import br.capitolio.engine.core.scene.Scene;
 import br.capitolio.framework.cdi.Injector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.capitolio.framework.cdi.context.DefaultContext;
 
 public abstract class EngineManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(EngineManager.class);
@@ -26,6 +28,11 @@ public abstract class EngineManager {
             return;
 
         LOGGER.info("Starting the Game Engine");
+
+        if (Injector.getModules().contains("br.capitolio.binding.GLBinding")) {
+            LOGGER.info("Using OpenGL");
+        }
+
         render.setWindow(window);
         scene.setWindow(window);
         scene.setRenderer(render);

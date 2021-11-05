@@ -1,6 +1,6 @@
-package br.capitolio.engine.scene;
+package br.capitolio.engine.core.scene;
 
-import br.capitolio.engine.graphics.Mesh;
+import br.capitolio.engine.core.graphics.Mesh;
 import lombok.Getter;
 import lombok.Setter;
 

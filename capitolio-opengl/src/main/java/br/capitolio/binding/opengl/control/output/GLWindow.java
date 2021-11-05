@@ -2,15 +2,15 @@ package br.capitolio.binding.opengl.control.output;
 
 import br.capitolio.binding.opengl.GLException;
 import br.capitolio.engine.EngineSettings;
-import br.capitolio.control.output.Window;
+import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class GLWindow extends Window {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLWindow.class);

@@ -1,4 +1,4 @@
-package br.capitolio.engine.graphics;
+package br.capitolio.engine.core.graphics;
 
 public class RGBA {
     public static RGBA RED = new RGBA(1.0f, 0.0f, 0.0f);

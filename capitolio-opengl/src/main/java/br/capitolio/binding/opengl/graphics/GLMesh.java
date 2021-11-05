@@ -1,11 +1,12 @@
 package br.capitolio.binding.opengl.graphics;
 
 import br.capitolio.binding.opengl.graphics.mesh.*;
-import br.capitolio.engine.graphics.Mesh;
-import br.capitolio.engine.graphics.Vertex;
+import br.capitolio.engine.core.graphics.Mesh;
+import br.capitolio.engine.core.graphics.Texture;
+import br.capitolio.engine.core.graphics.Vertex;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import org.lwjgl.opengl.GL30;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -21,11 +22,12 @@ public final class GLMesh extends Mesh {
     private VertexBufferObject[] buffers;
     private Vertex[] vertices;
     private int[] indices;
+    private Texture texture;
 
     @Override
     protected void doInit() {
         identity = GL30.glGenVertexArrays();
-        LOGGER.debug("Created VAO [{}]", identity);
+        LOGGER.debug("Created VAO [%s]", identity);
         GL30.glBindVertexArray(identity);
 
         // The ordering matters
@@ -51,6 +53,11 @@ public final class GLMesh extends Mesh {
         this.indices = indices;
     }
 
+    @Override
+    protected void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     public IndexBufferObject getIndex() {
         return (IndexBufferObject) buffers[INDICES];
     }
@@ -72,7 +79,7 @@ public final class GLMesh extends Mesh {
         if (identity == null)
             return;
 
-        LOGGER.debug("Destroying VAO [{}]", identity);
+        LOGGER.debug("Destroying VAO [%s]", identity);
         Arrays.stream(buffers).forEach(VertexBufferObject::destroy);
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(identity);

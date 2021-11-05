@@ -1,8 +1,8 @@
 package br.capitolio.engine;
 
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import org.joml.Vector2i;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class EngineSettings {
     private static final Logger LOGGER = LoggerFactory.getLogger(EngineSettings.class);
@@ -17,7 +17,7 @@ public abstract class EngineSettings {
         setWindowSize(new Vector2i(width, height));
     }
     public static void setWindowSize(Vector2i desired) {
-        LOGGER.debug("Configuring Window Size [{}, {}]", desired.x, desired.y);
+        LOGGER.debug("Configuring Window Size [%s, %s]", desired.x, desired.y);
         windowSize.set(desired);
     }
 
@@ -26,7 +26,7 @@ public abstract class EngineSettings {
         return vsync;
     }
     public static void setVsync(boolean desired) {
-        LOGGER.debug("Configuring VSYNC [{}]", desired);
+        LOGGER.debug("Configuring VSYNC [%s]", desired);
         vsync = desired;
     }
 
@@ -35,7 +35,7 @@ public abstract class EngineSettings {
         return windowTitle;
     }
     public static void setWindowTitle(String desired) {
-        LOGGER.debug("Configuring Window Title [{}]", desired);
+        LOGGER.debug("Configuring Window Title [%s]", desired);
         windowTitle = desired;
     }
 }

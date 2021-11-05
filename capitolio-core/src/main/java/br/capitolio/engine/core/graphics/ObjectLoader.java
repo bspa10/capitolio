@@ -1,9 +1,8 @@
-package br.capitolio.engine.graphics;
+package br.capitolio.engine.core.graphics;
 
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import br.capitolio.framework.cdi.Injector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class ObjectLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ObjectLoader.class);
 

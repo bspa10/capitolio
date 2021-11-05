@@ -1,4 +1,4 @@
-package br.capitolio.engine.graphics;
+package br.capitolio.engine.core.graphics;
 
 import lombok.Getter;
 import org.joml.Vector3f;

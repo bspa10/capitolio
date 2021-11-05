@@ -2,7 +2,7 @@ package br.capitolio.binding.opengl.graphics.mesh;
 
 import br.capitolio.binding.opengl.graphics.GLMesh;
 import br.capitolio.binding.opengl.utils.BufferUtils;
-import br.capitolio.engine.graphics.Vertex;
+import br.capitolio.engine.core.graphics.Vertex;
 
 public class TextureBufferObject extends VertexBufferObject {
     private static final int SIZE = 2;

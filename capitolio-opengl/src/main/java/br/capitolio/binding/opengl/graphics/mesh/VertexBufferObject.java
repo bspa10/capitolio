@@ -1,10 +1,10 @@
 package br.capitolio.binding.opengl.graphics.mesh;
 
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.FloatBuffer;
 
@@ -13,7 +13,7 @@ public class VertexBufferObject {
     private Integer identity;
 
     protected void setIdentity(int identity) {
-        LOGGER.debug("Create VBO [{}]", getClass().getSimpleName());
+        LOGGER.debug("Create VBO [%s]", getClass().getSimpleName());
         this.identity = identity;
     }
 
@@ -25,7 +25,7 @@ public class VertexBufferObject {
         if (identity == null)
             return;
 
-        LOGGER.debug("Destroying VBO [{}]", getClass().getSimpleName());
+        LOGGER.debug("Destroying VBO [%s]", getClass().getSimpleName());
         GL15.glDeleteBuffers(identity);
         identity = null;
     }

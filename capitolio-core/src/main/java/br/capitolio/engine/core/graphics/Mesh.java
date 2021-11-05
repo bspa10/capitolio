@@ -1,7 +1,7 @@
-package br.capitolio.engine.graphics;
+package br.capitolio.engine.core.graphics;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 
 public abstract class Mesh {
     private static final Logger LOGGER = LoggerFactory.getLogger(Mesh.class);
@@ -10,6 +10,7 @@ public abstract class Mesh {
 
     protected abstract void setVertices(Vertex[] vertices);
     protected abstract void setIndices(int[] indices);
+    protected abstract void setTexture(Texture texture);
 
     protected abstract void doInit();
     public void init() {

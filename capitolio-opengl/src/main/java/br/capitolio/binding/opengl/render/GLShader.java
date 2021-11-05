@@ -3,11 +3,11 @@ package br.capitolio.binding.opengl.render;
 import br.capitolio.binding.opengl.GLException;
 import br.capitolio.binding.opengl.GLSettings;
 import br.capitolio.binding.opengl.graphics.GLMesh;
+import br.capitolio.engine.logging.Logger;
+import br.capitolio.engine.logging.LoggerFactory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class GLShader {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLShader.class);
