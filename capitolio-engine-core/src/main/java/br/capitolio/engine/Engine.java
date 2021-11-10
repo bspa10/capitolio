@@ -84,10 +84,7 @@ public abstract class Engine {
             }
 
             if (shouldRender) {
-                // Atualiza a representação do mundo
                 update();
-
-                // Desenha o mundo para o usuário
                 render();
                 frames++;
             }
