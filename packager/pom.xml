@@ -11,9 +11,10 @@
 
     <modules>
         <module>../parent</module>
-        <module>../capitolio-core</module>
-        <module>../capitolio-opengl</module>
-        <module>../capitolio-awt</module>
-        <module>../capitolio-minecraft</module>
+        <module>../capitolio-engine-core</module>
+        <module>../capitolio-engine-opengl</module>
+        <module>../capitolio-engine-awt</module>
+        <module>../capitolio-game-minecraft</module>
+        <module>../capitolio-game-cities</module>
     </modules>
 </project>
