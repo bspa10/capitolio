@@ -1,6 +1,6 @@
-package br.capitolio.engine.binding.opengl.graphics.mesh;
+package br.capitolio.engine.binding.opengl.mesh;
 
-import br.capitolio.engine.binding.opengl.utils.BufferUtils;
+import br.capitolio.engine.binding.opengl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 
 public class IndexBufferObject extends VertexBufferObject {

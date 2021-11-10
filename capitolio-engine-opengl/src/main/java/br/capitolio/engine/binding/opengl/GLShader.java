@@ -1,15 +1,12 @@
-package br.capitolio.engine.binding.opengl.render;
+package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.binding.opengl.GLException;
-import br.capitolio.engine.binding.opengl.GLSettings;
-import br.capitolio.engine.binding.opengl.graphics.GLMesh;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryUtil;
 
-public final class GLShader {
+final class GLShader {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLShader.class);
     private int pid;
     private int vid;

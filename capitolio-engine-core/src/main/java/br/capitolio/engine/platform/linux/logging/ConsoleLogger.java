@@ -7,6 +7,7 @@ import br.capitolio.engine.core.logging.LoggingSettings;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
 import java.util.Locale;
 
 public final class ConsoleLogger extends AbstractLogger implements Logger {

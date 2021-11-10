@@ -1,4 +1,4 @@
-package br.capitolio.engine.binding.opengl.graphics.mesh;
+package br.capitolio.engine.binding.opengl.mesh;
 
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;

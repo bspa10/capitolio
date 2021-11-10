@@ -1,7 +1,7 @@
-package br.capitolio.engine.binding.opengl.graphics.mesh;
+package br.capitolio.engine.binding.opengl.mesh;
 
-import br.capitolio.engine.binding.opengl.graphics.GLMesh;
-import br.capitolio.engine.binding.opengl.utils.BufferUtils;
+import br.capitolio.engine.binding.opengl.GLMesh;
+import br.capitolio.engine.binding.opengl.BufferUtils;
 import br.capitolio.engine.render.backend.mesh.Vertex;
 
 public class ColorBufferObject extends VertexBufferObject {

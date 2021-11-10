@@ -1,11 +1,11 @@
-package br.capitolio.engine.binding.opengl.render;
+package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.binding.opengl.graphics.GLMesh;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.render.Renderer;
 import org.lwjgl.opengl.*;
+
 public final class GLRenderer extends Renderer {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLRenderer.class);
     private final GLShader shader = new GLShader();

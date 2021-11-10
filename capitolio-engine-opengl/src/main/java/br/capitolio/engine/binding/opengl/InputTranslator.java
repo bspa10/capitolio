@@ -1,11 +1,11 @@
-package br.capitolio.engine.binding.opengl.control.input;
+package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.EngineException;
 import br.capitolio.engine.core.control.input.KeyInput;
 import br.capitolio.engine.core.control.input.MouseInput;
 import org.lwjgl.glfw.GLFW;
 
-public class InputTranslator {
+final class InputTranslator {
 
     public KeyInput translateKey(int keycode) {
         return switch (keycode) {

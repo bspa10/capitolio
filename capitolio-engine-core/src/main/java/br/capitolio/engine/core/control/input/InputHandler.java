@@ -14,11 +14,11 @@ public abstract class InputHandler {
     private static final ConcurrentMap<String, InputCombination> mappings = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, KeyBinding> bindings = new ConcurrentHashMap<>();
 
-    private InputHandler(){}
-
+    public static final Vector2d mouse = new Vector2d();
     public static final SortedSet<KeyInput> keys = new ConcurrentSkipListSet<>();
     public static final SortedSet<MouseInput> buttons = new ConcurrentSkipListSet<>();
-    public static final Vector2d mouse = new Vector2d();
+
+    private InputHandler(){}
 
     public static int getActivatedKeys() {
         return keys.stream().map(KeyInput::getKeycode).reduce(0, Integer::sum);

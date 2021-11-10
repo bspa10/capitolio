@@ -1,4 +1,4 @@
-package br.capitolio.engine.binding.opengl.utils;
+package br.capitolio.engine.binding.opengl;
 
 import org.lwjgl.system.MemoryUtil;
 

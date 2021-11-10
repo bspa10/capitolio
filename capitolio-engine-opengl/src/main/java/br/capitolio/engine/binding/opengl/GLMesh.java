@@ -1,6 +1,6 @@
-package br.capitolio.engine.binding.opengl.graphics;
+package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.binding.opengl.graphics.mesh.*;
+import br.capitolio.engine.binding.opengl.mesh.*;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.render.backend.texture.Texture;
 import br.capitolio.engine.render.backend.mesh.Vertex;

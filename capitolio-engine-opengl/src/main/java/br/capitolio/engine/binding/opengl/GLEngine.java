@@ -1,10 +1,10 @@
 package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.EngineManager;
+import br.capitolio.engine.Engine;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-public final class GLEngine extends EngineManager {
+public final class GLEngine extends Engine {
     private GLFWErrorCallback errorCallback;
 
     private GLEngine(){}

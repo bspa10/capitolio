@@ -9,12 +9,12 @@ import br.capitolio.engine.render.Renderer;
 import br.capitolio.engine.core.scene.Scene;
 import br.capitolio.tools.cdi.Injector;
 
-public abstract class EngineManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EngineManager.class);
+public abstract class Engine {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Engine.class);
     public static final long FRAMERATE = 240L;
 
-    protected static int fps;
-    protected static float frametime = 1.0f / FRAMERATE;
+    protected int fps;
+    protected float frametime = 1.0f / FRAMERATE;
 
     private Scene scene;
     private final Renderer render = Injector.inject(Renderer.class);
@@ -22,8 +22,10 @@ public abstract class EngineManager {
 
     protected abstract void doStart();
     public final void start(Scene scene) {
-        if (GlobalState.isRunning())
+        if (GlobalState.isRunning()) {
+            LOGGER.warn("Trying to start an ingoing game");
             return;
+        }
 
         LOGGER.info("Starting the Game Engine");
         render.setWindow(window);

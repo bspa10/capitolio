@@ -1,7 +1,5 @@
-package br.capitolio.engine.binding.opengl.control.output;
+package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.binding.opengl.GLException;
-import br.capitolio.engine.binding.opengl.control.input.InputTranslator;
 import br.capitolio.engine.EngineSettings;
 import br.capitolio.engine.core.control.input.InputHandler;
 import br.capitolio.engine.core.control.output.Window;
