@@ -33,16 +33,53 @@ public abstract class Reflections {
             return klass.getCanonicalName().startsWith("br.com.gedjus");
         }
 
-        public static Type[] getGenericTypes(Class<?> klass, Class<?> sklass) {
-            final var type = klass.getGenericSuperclass();
+        public static Type[] getGenericTypes(Object object, Class<?> klass) {
+            for (var genericInterface : object.getClass().getGenericInterfaces()) {
+                if (! genericInterface.getTypeName().contains(klass.getCanonicalName()))
+                    continue;
 
-            if (type.getTypeName().contains(sklass.getCanonicalName())) {
-                if (type instanceof ParameterizedType) {
-                    return ((ParameterizedType) type).getActualTypeArguments();
+                if (genericInterface instanceof final ParameterizedType parameterizedType) {
+                    return parameterizedType.getActualTypeArguments();
                 }
             }
 
             return new Type[]{};
+        }
+
+        public static Type[] getGenericTypes(Class<?> klass, Class<?> sklass) {
+            for (var genericInterface : klass.getGenericInterfaces()) {
+                if (! genericInterface.getTypeName().contains(sklass.getCanonicalName()))
+                    continue;
+
+                if (genericInterface instanceof final ParameterizedType parameterizedType) {
+                    return parameterizedType.getActualTypeArguments();
+                }
+            }
+
+            final var type = klass.getGenericSuperclass();
+            if (type.getTypeName().contains(sklass.getCanonicalName())) {
+                if (type instanceof final ParameterizedType parameterizedType) {
+                    return parameterizedType.getActualTypeArguments();
+                }
+            }
+
+            return new Type[]{};
+        }
+
+        public static List<Class<?>> getParents(Object object) {
+            return getParents(object.getClass());
+        }
+
+        public static List<Class<?>> getParents(Class<?> klass) {
+            final var parents = new ArrayList<Class<?>>();
+            parents.add(klass);
+
+            Class<?> parent = klass;
+            while ((parent = parent.getSuperclass()) != null) {
+                parents.add(parent);
+            }
+
+            return parents;
         }
 
         /**

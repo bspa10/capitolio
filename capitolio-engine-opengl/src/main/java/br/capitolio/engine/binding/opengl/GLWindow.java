@@ -1,11 +1,14 @@
 package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.EngineSettings;
-import br.capitolio.engine.core.control.input.InputHandler;
-import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.Window;
+import br.capitolio.engine.core.input.constants.InputAction;
+import br.capitolio.engine.core.input.event.*;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
+import br.capitolio.engine.event.EventBus;
 import org.joml.Matrix4f;
+import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
@@ -77,32 +80,35 @@ public final class GLWindow extends Window {
         GL11.glCullFace(GL11.GL_BACK);
 
         GLFW.glfwSetKeyCallback(window,(window, key, scancode, action, mods) -> {
-            final var input = inputTranslator.translateKey(key);
-            if (action == GLFW.GLFW_RELEASE) {
-                LOGGER.trace("Key [%s] released", input);
-                InputHandler.keys.remove(input);
-            }
+            if (action == GLFW.GLFW_REPEAT)
+                return;
 
-            if (action == GLFW.GLFW_PRESS) {
-                LOGGER.trace("Key [%s] pressed", input);
-                InputHandler.keys.add(input);
-            }
+            final var ik = inputTranslator.translateKey(key);
+            if (action == GLFW.GLFW_PRESS)
+                EventBus.post(new KeyboardKeyPressEvent(ik));
+
+            if (action == GLFW.GLFW_RELEASE)
+                EventBus.post(new KeyboardKeyReleaseEvent(ik));
+
         });
 
         GLFW.glfwSetMouseButtonCallback(window, (window, button, action, mods) -> {
-            final var input = inputTranslator.translateButton(button);
-            if (action == GLFW.GLFW_RELEASE) {
-                LOGGER.trace("Button [%s] released", input);
-                InputHandler.buttons.remove(input);
-            }
+            if (action == GLFW.GLFW_REPEAT)
+                return;
 
-            if (action == GLFW.GLFW_PRESS) {
-                LOGGER.trace("Button [%s] pressed", input);
-                InputHandler.buttons.add(input);
-            }
+            final var ik = inputTranslator.translateButton(button);
+            final var ia = action == GLFW.GLFW_PRESS ? InputAction.PRESS : InputAction.RELEASE;
+
+            EventBus.post(new MouseButtonEvent(ia, ik));
         });
 
-        GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> InputHandler.mouse.set(xpos, ypos));
+        GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
+            final var position = new Vector2d(xpos, ypos);
+
+            EventBus.post(new MousePositionEvent(position));
+        });
+
+
     }
 
     @Override
@@ -117,10 +123,8 @@ public final class GLWindow extends Window {
     }
 
     @Override
-    public void render() {
-        GLFW.glfwSwapBuffers(window);
-        GLFW.glfwSwapBuffers(window);
-        GLFW.glfwSwapBuffers(window);
+    protected void doRender() {
+        GL11.glFlush();
         GLFW.glfwSwapBuffers(window);
     }
 
@@ -132,13 +136,6 @@ public final class GLWindow extends Window {
     @Override
     public void doCleanup() {
         GLFW.glfwDestroyWindow(window);
-    }
-
-    private boolean isKeyActivated(int keycode) {
-        if (keycode == -1)
-            return false;
-
-        return GLFW.glfwGetKey(window, keycode) == GLFW.GLFW_PRESS;
     }
 
     @Override

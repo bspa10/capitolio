@@ -1,8 +1,9 @@
 package br.capitolio.engine;
 
-import br.capitolio.engine.core.control.input.InputHandler;
+import br.capitolio.engine.core.input.InputHandler;
+import br.capitolio.engine.core.profile.Profiler;
 import br.capitolio.engine.core.time.Clock;
-import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.render.Renderer;
@@ -11,15 +12,12 @@ import br.capitolio.tools.cdi.Injector;
 
 public abstract class Engine {
     private static final Logger LOGGER = LoggerFactory.getLogger(Engine.class);
-    public static final long FRAMERATE = 240L;
 
-    protected int fps;
-    protected float frametime = 1.0f / FRAMERATE;
+    protected double frametime = 1.0 / EngineSettings.getFramerate();
 
     private Scene scene;
     private final Renderer render = Injector.inject(Renderer.class);
     private final Window window = Injector.inject(Window.class);
-
     protected abstract void doStart();
     public final void start(Scene scene) {
         if (GlobalState.isRunning()) {
@@ -53,12 +51,19 @@ public abstract class Engine {
         GlobalState.setRunning();
         var frames = 0;
         var frameCounter = 0L;
+        var lastTime = System.nanoTime();
         var unprocessedTime = 0.0;
 
-        final var clock = new Clock();
         while (GlobalState.isRunning()) {
-            final var passedTime = clock.delta();
-            clock.mark();
+            Profiler.mark("Game Loop");
+            // Marca o instante de inicio do loop
+            final var startTime = System.nanoTime();
+
+            // Identifica o tempo decorrido entre o último loop e este
+            final var passedTime = startTime - lastTime;
+
+            // Armazena o tempo de início do loop
+            lastTime = startTime;
 
             // Frame elapsed time
             unprocessedTime += passedTime / (double) Clock.NANOSECOND;
@@ -76,18 +81,22 @@ public abstract class Engine {
                     stop();
 
                 if (frameCounter >= Clock.NANOSECOND) {
-                    fps = frames;
-                    window.setTitle("%s | FPS: %s".formatted(EngineSettings.getWindowTitle(), fps));
+                    window.setTitle("%s | FPS: %s".formatted(EngineSettings.getWindowTitle(), frames));
                     frames = 0;
                     frameCounter = 0;
+                    Profiler.setFrame(frames);
                 }
             }
 
             if (shouldRender) {
                 update();
                 render();
+
                 frames++;
+                Profiler.setFrame(frames);
             }
+
+            Profiler.release("Game Loop", 1000 / 60.0);
         }
 
         window.hide();
@@ -95,12 +104,13 @@ public abstract class Engine {
     }
 
     private void processInput() {
+        Profiler.mark("Engine.input()");
         final var strokes = InputHandler.getActivatedKeys();
 
         InputHandler
                 .getBoundCombinations()
                 .forEach(keyBinding -> {
-                    if (strokes == keyBinding.getCombination().getActivationCode()) {
+                    if (strokes.equals(keyBinding.getCombination().getActivationCode())) {
                         final var action = keyBinding.getAction();
 
                         action.setScene(scene);
@@ -108,16 +118,21 @@ public abstract class Engine {
                         action.setScene(null);
                     }
                 });
+        Profiler.release("Engine.input()");
     }
 
     private void update() {
+        Profiler.mark("Engine.update()");
         scene.update();
         window.update();
+        Profiler.release("Engine.update()");
     }
 
     private void render() {
+        Profiler.mark("Engine.render()");
         scene.render();
         window.render();
+        Profiler.release("Engine.render()");
     }
 
     protected abstract void doCleanup();

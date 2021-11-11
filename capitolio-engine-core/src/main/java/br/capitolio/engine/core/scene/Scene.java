@@ -1,7 +1,8 @@
 package br.capitolio.engine.core.scene;
 
 import br.capitolio.engine.EngineException;
-import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.Window;
+import br.capitolio.engine.core.profile.Profiler;
 import br.capitolio.engine.gameplay.GameObject;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
@@ -50,7 +51,9 @@ public abstract class Scene {
 
     protected abstract void doRender();
     public final void render() {
+        Profiler.mark("Scene.render()");
         doRender();
+        Profiler.release("Scene.render()");
     }
 
     protected abstract void doCleanup();

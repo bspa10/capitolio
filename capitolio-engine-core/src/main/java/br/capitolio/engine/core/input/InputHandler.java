@@ -1,6 +1,12 @@
-package br.capitolio.engine.core.control.input;
+package br.capitolio.engine.core.input;
 
 import br.capitolio.engine.EngineException;
+import br.capitolio.engine.core.input.action.AbstractAction;
+import br.capitolio.engine.core.input.action.InputCombination;
+import br.capitolio.engine.core.input.action.KeyBinding;
+import br.capitolio.engine.core.input.constants.KeyInput;
+import br.capitolio.engine.core.input.constants.MouseInput;
+import br.capitolio.engine.event.EventBus;
 import br.capitolio.tools.reflection.Reflections;
 import org.joml.Vector2d;
 
@@ -9,19 +15,26 @@ import java.util.SortedSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 public abstract class InputHandler {
     private static final ConcurrentMap<String, InputCombination> mappings = new ConcurrentHashMap<>();
     private static final ConcurrentMap<String, KeyBinding> bindings = new ConcurrentHashMap<>();
 
-    public static final Vector2d mouse = new Vector2d();
-    public static final SortedSet<KeyInput> keys = new ConcurrentSkipListSet<>();
-    public static final SortedSet<MouseInput> buttons = new ConcurrentSkipListSet<>();
+    static final Vector2d mouse = new Vector2d();
+    static final SortedSet<KeyInput> keys = new ConcurrentSkipListSet<>();
+    static final SortedSet<MouseInput> buttons = new ConcurrentSkipListSet<>();
 
     private InputHandler(){}
 
-    public static int getActivatedKeys() {
-        return keys.stream().map(KeyInput::getKeycode).reduce(0, Integer::sum);
+    static {
+        EventBus.subscribe(KeyboardEventListener.class);
+        EventBus.subscribe(MouseButtonEventListener.class);
+        EventBus.subscribe(MousePositionEventListener.class);
+    }
+
+    public static String getActivatedKeys() {
+        return keys.stream().map(k -> String.valueOf(k.getKeycode())).collect(Collectors.joining("."));
     }
 
     /**

@@ -7,7 +7,7 @@ import br.capitolio.engine.binding.opengl.GLRenderer;
 import br.capitolio.engine.Engine;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.render.Renderer;
-import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.Window;
 import br.capitolio.tools.cdi.annotation.Module;
 import br.capitolio.tools.cdi.annotation.Provider;
 import br.capitolio.tools.reflection.Reflections;

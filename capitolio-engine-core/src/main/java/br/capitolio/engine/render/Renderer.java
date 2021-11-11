@@ -1,6 +1,7 @@
 package br.capitolio.engine.render;
 
-import br.capitolio.engine.core.control.output.Window;
+import br.capitolio.engine.core.Window;
+import br.capitolio.engine.core.profile.Profiler;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
@@ -22,21 +23,24 @@ public abstract class Renderer {
     }
 
     public final void render(Scene scene) {
-        clear();
+        Profiler.mark("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
+        Profiler.mark("Renderer.doClear()");
+        doClear();
+        Profiler.release("Renderer.doClear()");
         scene.getChildren().forEach(this::render);
+        Profiler.release("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
     }
     private void render(GameObject go) {
-        if (go.getMesh() != null)
+        if (go.getMesh() != null) {
+            Profiler.mark("Renderer.render(%s)".formatted(go.getClass().getTypeName()));
             doRender(go.getMesh());
+            Profiler.release("Renderer.render(%s)".formatted(go.getClass().getTypeName()));
+        }
 
         go.getChildren().forEach(this::render);
     }
-    protected abstract void doRender(Mesh mesh);
-
     protected abstract void doClear();
-    public final void clear() {
-        doClear();
-    }
+    protected abstract void doRender(Mesh mesh);
 
     protected abstract void doCleanup();
     public final void cleanup() {

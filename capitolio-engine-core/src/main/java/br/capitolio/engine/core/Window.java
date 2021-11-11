@@ -1,8 +1,9 @@
-package br.capitolio.engine.core.control.output;
+package br.capitolio.engine.core;
 
 import br.capitolio.engine.EngineSettings;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
+import br.capitolio.engine.core.profile.Profiler;
 import lombok.Getter;
 import org.joml.Math;
 import org.joml.Matrix4f;
@@ -36,7 +37,12 @@ public abstract class Window {
 
     public abstract void hide();
 
-    public abstract void render();
+    protected abstract void doRender();
+    public final void render(){
+        Profiler.mark("Window.render()");
+        doRender();
+        Profiler.release("Window.render()");
+    }
 
     public abstract void update();
 

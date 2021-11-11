@@ -1,8 +1,8 @@
 package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.EngineException;
-import br.capitolio.engine.core.control.input.KeyInput;
-import br.capitolio.engine.core.control.input.MouseInput;
+import br.capitolio.engine.core.input.constants.KeyInput;
+import br.capitolio.engine.core.input.constants.MouseInput;
 import org.lwjgl.glfw.GLFW;
 
 final class InputTranslator {

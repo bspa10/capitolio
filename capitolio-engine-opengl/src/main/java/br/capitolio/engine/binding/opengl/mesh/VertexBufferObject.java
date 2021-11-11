@@ -5,6 +5,7 @@ import br.capitolio.engine.core.logging.LoggerFactory;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 
@@ -37,6 +38,7 @@ public class VertexBufferObject {
         GL20.glVertexAttribPointer(attrNo, size, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
+        MemoryUtil.memFree(buffer);
         setIdentity(bufferId);
     }
 }

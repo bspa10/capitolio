@@ -1,14 +1,18 @@
-package br.capitolio.engine.core.control.input;
+package br.capitolio.engine.core.input.action;
 
+import br.capitolio.engine.core.input.constants.KeyInput;
+import br.capitolio.engine.core.input.constants.MouseInput;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Getter
 public final class InputCombination {
 
-    private final int activationCode;
+    private final String activationCode;
     private final List<KeyInput> keys = new ArrayList<>();
     private final List<MouseInput> buttons = new ArrayList<>();
 
@@ -21,12 +25,11 @@ public final class InputCombination {
             this.buttons.addAll(buttons);
         }
 
-        activationCode =
-                this.keys.stream().map(KeyInput::getKeycode).reduce(0, Integer::sum)
-                        + this.buttons.stream().map(MouseInput::getKeycode).reduce(0, Integer::sum);
+        activationCode = this.keys.stream().map(k -> String.valueOf(k.getKeycode())).collect(Collectors.joining("."))
+                + this.buttons.stream().map(k -> String.valueOf(k.getKeycode())).collect(Collectors.joining("."));
     }
 
-    public int getActivationCode() {
+    public String getActivationCode() {
         return activationCode;
     }
 }

@@ -39,4 +39,23 @@ public abstract class EngineSettings extends AbstractSettings {
         LOGGER.debug("Configuring Window Title [%s]", desired);
         windowTitle = desired;
     }
+
+    private static boolean profile = false;
+    public static boolean isProfile() {
+        return profile;
+    }
+    public static void setProfile() {
+        EngineSettings.profile = true;
+    }
+    public static void unsetProfile() {
+        EngineSettings.profile = false;
+    }
+
+    private static long framerate = 240L;
+    public static long getFramerate() {
+        return framerate;
+    }
+    public static void setFramerate(long framerate) {
+        EngineSettings.framerate = framerate;
+    }
 }

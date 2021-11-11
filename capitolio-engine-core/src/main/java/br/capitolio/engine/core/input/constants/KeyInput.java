@@ -1,4 +1,4 @@
-package br.capitolio.engine.core.control.input;
+package br.capitolio.engine.core.input.constants;
 
 public enum KeyInput {
 
