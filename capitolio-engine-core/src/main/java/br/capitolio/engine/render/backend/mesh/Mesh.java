@@ -13,6 +13,8 @@ public abstract class Mesh {
     protected abstract void setIndices(int[] indices);
     protected abstract void setTexture(Texture texture);
 
+    public abstract int getVertexCount();
+
     protected abstract void doInit();
     public void init() {
         LOGGER.debug("Initializing");

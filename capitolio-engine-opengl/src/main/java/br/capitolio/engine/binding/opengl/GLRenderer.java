@@ -1,13 +1,10 @@
 package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.render.backend.mesh.Mesh;
-import br.capitolio.engine.core.logging.Logger;
-import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.render.Renderer;
 import org.lwjgl.opengl.*;
 
 public final class GLRenderer extends Renderer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GLRenderer.class);
     private final GLShader shader = new GLShader();
     private GLRenderer(){}
 
@@ -18,6 +15,9 @@ public final class GLRenderer extends Renderer {
 
     @Override
     protected void doRender(Mesh mesh) {
+        if (window.isResize())
+            window.setViewPort(0, 0);
+
         shader.bind();
 
         GL30.glBindVertexArray(mesh.getIdentity());
@@ -25,7 +25,7 @@ public final class GLRenderer extends Renderer {
         GL20.glEnableVertexAttribArray(GLMesh.COLOR);
         GL20.glEnableVertexAttribArray(GLMesh.TEXTURE);
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, ((GLMesh) mesh).getIndex().getLength(), GL11.GL_UNSIGNED_INT, 0);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
         GL20.glDisableVertexAttribArray(GLMesh.POSITION);
         GL20.glDisableVertexAttribArray(GLMesh.COLOR);

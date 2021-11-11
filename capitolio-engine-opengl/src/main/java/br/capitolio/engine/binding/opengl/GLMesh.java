@@ -1,13 +1,17 @@
 package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.binding.opengl.mesh.*;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.render.backend.texture.Texture;
 import br.capitolio.engine.render.backend.mesh.Vertex;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryUtil;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 public final class GLMesh extends Mesh {
@@ -18,29 +22,53 @@ public final class GLMesh extends Mesh {
     public static final int COLOR = 2;
     public static final int TEXTURE = 3;
 
-    private Integer identity;
-    private VertexBufferObject[] buffers;
+    private Integer vao;
+    private final Integer[] vbos = new Integer[4];
     private Vertex[] vertices;
     private int[] indices;
     private Texture texture;
 
     @Override
     protected void doInit() {
-        identity = GL30.glGenVertexArrays();
-        LOGGER.debug("Created VAO [%s]", identity);
-        GL30.glBindVertexArray(identity);
+        vao = GL30.glGenVertexArrays();
+        LOGGER.debug("Created VAO [%s]", vao);
+        GL30.glBindVertexArray(vao);
 
         // The ordering matters
-        buffers = new VertexBufferObject[4];
-        buffers[INDICES] = new IndexBufferObject(indices);
-        buffers[POSITION] = new PositionBufferObject(vertices);
-        buffers[COLOR] = new ColorBufferObject(vertices);
-        buffers[TEXTURE] = new TextureBufferObject(vertices);
+
+        vbos[INDICES] = GL15.glGenBuffers();
+        final var buffer = BufferUtils.store(indices);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, getIdentity());
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        MemoryUtil.memFree(buffer);
+
+        final var pData = new float[vertices.length * 3];
+        for (int i = 0; i < vertices.length; i++) {
+            pData[i * 3    ] = vertices[i].getPosition().x;
+            pData[i * 3 + 1] = vertices[i].getPosition().y;
+            pData[i * 3 + 2] = vertices[i].getPosition().z;
+        }
+        vbos[POSITION] = storeDate(BufferUtils.store(pData), GLMesh.POSITION, 3);
+
+        final var cData = new float[vertices.length * 3];
+        for (int i = 0; i < vertices.length; i++) {
+            cData[i * 3    ] = vertices[i].getColor().getRed();
+            cData[i * 3 + 1] = vertices[i].getColor().getGreen();
+            cData[i * 3 + 2] = vertices[i].getColor().getBlue();
+        }
+        vbos[COLOR] = storeDate(BufferUtils.store(cData), GLMesh.COLOR, 3);
+
+        final var tData = new float[vertices.length * 2];
+        for (int i = 0; i < vertices.length; i++) {
+            tData[i * 2    ] = vertices[i].getPosition().x;
+            tData[i * 2 + 1] = vertices[i].getPosition().y;
+        }
+        vbos[TEXTURE] = storeDate(BufferUtils.store(tData), GLMesh.TEXTURE, 2);
     }
 
     @Override
     public Integer getIdentity() {
-        return identity;
+        return vao;
     }
 
     @Override
@@ -58,31 +86,31 @@ public final class GLMesh extends Mesh {
         this.texture = texture;
     }
 
-    public IndexBufferObject getIndex() {
-        return (IndexBufferObject) buffers[INDICES];
+    @Override
+    public int getVertexCount() {
+        return indices.length;
     }
 
-    public PositionBufferObject getPosition() {
-        return (PositionBufferObject) buffers[POSITION];
-    }
+    private int storeDate(FloatBuffer buffer, int attrNo, int size) {
+        final var bufferId = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferId);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL20.glVertexAttribPointer(attrNo, size, GL11.GL_FLOAT, false, 0, 0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-    public ColorBufferObject getColor() {
-        return (ColorBufferObject) buffers[COLOR];
-    }
-
-    public TextureBufferObject getTexture() {
-        return (TextureBufferObject) buffers[TEXTURE];
+        MemoryUtil.memFree(buffer);
+        return bufferId;
     }
 
     @Override
     protected void doCleanup() {
-        if (identity == null)
+        if (vao == null)
             return;
 
-        LOGGER.debug("Destroying VAO [%s]", identity);
-        Arrays.stream(buffers).forEach(VertexBufferObject::destroy);
+        LOGGER.debug("Destroying VAO [%s]", vao);
+        Arrays.stream(vbos).forEach(GL15::glDeleteBuffers);
         GL30.glBindVertexArray(0);
-        GL30.glDeleteVertexArrays(identity);
-        identity = null;
+        GL30.glDeleteVertexArrays(vao);
+        vao = null;
     }
 }
