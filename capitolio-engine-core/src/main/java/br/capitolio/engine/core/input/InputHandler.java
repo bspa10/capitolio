@@ -53,7 +53,7 @@ public abstract class InputHandler {
      */
     public static void binding(String name, Class<? extends AbstractAction> action) {
         if (!mappings.containsKey(name))
-            throw new EngineException("Mapping [%s] not found", name);
+            throw new EngineException("Mapping [%s] not found".formatted(name));
 
         bindings.put(name, new KeyBinding(name, mappings.get(name), Reflections.Classes.newInstance(action)));
     }

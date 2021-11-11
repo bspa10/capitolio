@@ -7,44 +7,68 @@ import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.gameplay.GameObject;
 import br.capitolio.engine.core.scene.Scene;
+import br.capitolio.engine.render.backend.shader.ShaderProgram;
+import br.capitolio.engine.render.backend.shader.Uniform;
+import br.capitolio.tools.cdi.Injector;
 
 public abstract class Renderer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Renderer.class);
-    protected Window window;
 
-    public void setWindow(Window window) {
+    protected Window window;
+    protected final ShaderProgram program = Injector.inject(ShaderProgram.class);
+
+    public final void setWindow(Window window) {
+        if (this.window != null)
+            throw new RenderException("Window already set");
+
         this.window = window;
     }
 
     protected abstract void doInit();
     public final void init() {
         LOGGER.debug("Initializing");
+        program.init();
+
+        program.createUniform(Uniform.WORLD_MATRIX);
+        program.createUniform(Uniform.PROJECTION_MATRIX);
+
         doInit();
     }
 
     public final void render(Scene scene) {
-        Profiler.mark("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
+        if (window.isResize())
+            window.setViewPort(0, 0);
+
         Profiler.mark("Renderer.doClear()");
         doClear();
         Profiler.release("Renderer.doClear()");
+
+        Profiler.mark("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
+        program.bind();
+        program.setUniform(Uniform.PROJECTION_MATRIX, window.getProjectionMatrix());
         scene.getChildren().forEach(this::render);
+        program.unbind();
         Profiler.release("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
     }
+
+    protected abstract void doRender(Mesh mesh);
     private void render(GameObject go) {
         if (go.getMesh() != null) {
             Profiler.mark("Renderer.render(%s)".formatted(go.getClass().getTypeName()));
+            program.setUniform(Uniform.WORLD_MATRIX, go.getWorldMatrix());
             doRender(go.getMesh());
             Profiler.release("Renderer.render(%s)".formatted(go.getClass().getTypeName()));
         }
 
         go.getChildren().forEach(this::render);
     }
+
     protected abstract void doClear();
-    protected abstract void doRender(Mesh mesh);
 
     protected abstract void doCleanup();
     public final void cleanup() {
         LOGGER.debug("Destroying");
         doCleanup();
     }
+
 }

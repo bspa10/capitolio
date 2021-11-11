@@ -92,7 +92,7 @@ public abstract class Reflections {
         @SneakyThrows
         public static <T> T newInstance(Class<T> klass, Object ... parameters) {
             if (klass.getEnclosingClass() != null) {
-                throw new ReflectionException("", "Oh no!! InnerClass?!");
+                throw new ReflectionException("Oh no!! InnerClass?!");
 
             }
 
@@ -103,7 +103,7 @@ public abstract class Reflections {
                 }
             }
 
-            throw new ReflectionException("", "Constructor for [%s] not found".formatted(klass.getCanonicalName()));
+            throw new ReflectionException("Constructor for [%s] not found".formatted(klass.getCanonicalName()));
         }
 
         public static Method getMethod(Class<?> klass, String name, Object ... parameters) {
@@ -119,7 +119,7 @@ public abstract class Reflections {
             try {
                 return klass.getDeclaredMethod(name, parameters);
             } catch (Exception ex) {
-                throw new ReflectionException("", ex.getMessage(), ex);
+                throw new ReflectionException(ex.getMessage(), ex);
             }
         }
 
@@ -210,7 +210,7 @@ public abstract class Reflections {
                     throw (CapitolioException) cause;
                 }
 
-                throw new ReflectionException("", ex.getMessage(), ex);
+                throw new ReflectionException(ex.getMessage(), ex);
             }
         }
 

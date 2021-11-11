@@ -29,7 +29,7 @@ public final class DefaultContext implements InjectionContext {
 
     public static void load(Class<?> module) {
         if (module == null) {
-            throw new CDIException("", "null module");
+            throw new CDIException("null module");
         }
 
         load(Reflections.Classes.newInstance(module));
@@ -37,16 +37,16 @@ public final class DefaultContext implements InjectionContext {
 
     public static void load(Object module) {
         if (module == null) {
-            throw new CDIException("", "null module");
+            throw new CDIException("null module");
         }
 
         if (!Reflections.Classes.hasAnnotation(module, Module.class)) {
-            throw new CDIException("", "@Module annotation not present in [%s]".formatted(module.getClass().getCanonicalName()));
+            throw new CDIException("@Module annotation not present in [%s]".formatted(module.getClass().getCanonicalName()));
         }
 
         final var found = Reflections.Classes.getMethods(module, Provider.class);
         if (found.isEmpty()) {
-            throw new CDIException("", "No @Provider method found in [%s] module".formatted(module.getClass().getCanonicalName()));
+            throw new CDIException("No @Provider method found in [%s] module".formatted(module.getClass().getCanonicalName()));
         }
 
         for (var method : found) {
@@ -62,7 +62,7 @@ public final class DefaultContext implements InjectionContext {
             final var previews = providers.get(key);
             final var annotation = previews.getAnnotation(Provider.class);
             if (!annotation.overridable()) {
-                throw new CDIException("", "Override forbidden for [%s]".formatted(key));
+                throw new CDIException("Override forbidden for [%s]".formatted(key));
             }
 
             modules.replace(key, module);

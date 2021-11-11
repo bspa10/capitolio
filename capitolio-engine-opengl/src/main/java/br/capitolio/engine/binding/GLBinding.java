@@ -1,13 +1,11 @@
 package br.capitolio.engine.binding;
 
-import br.capitolio.engine.binding.opengl.GLEngine;
-import br.capitolio.engine.binding.opengl.GLWindow;
-import br.capitolio.engine.binding.opengl.GLMesh;
-import br.capitolio.engine.binding.opengl.GLRenderer;
+import br.capitolio.engine.binding.opengl.*;
 import br.capitolio.engine.Engine;
 import br.capitolio.engine.render.backend.mesh.Mesh;
 import br.capitolio.engine.render.Renderer;
 import br.capitolio.engine.core.Window;
+import br.capitolio.engine.render.backend.shader.ShaderProgram;
 import br.capitolio.tools.cdi.annotation.Module;
 import br.capitolio.tools.cdi.annotation.Provider;
 import br.capitolio.tools.reflection.Reflections;
@@ -33,5 +31,10 @@ public class GLBinding {
     @Provider(overridable = false)
     public Mesh mesh() {
         return Reflections.Classes.newInstance(GLMesh.class);
+    }
+
+    @Provider(overridable = false)
+    public ShaderProgram shaderProgram() {
+        return Reflections.Classes.newInstance(GLShader.class);
     }
 }

@@ -4,12 +4,12 @@ import br.capitolio.CapitolioException;
 
 public abstract class ToolsException extends CapitolioException {
 
-    public ToolsException(String code, String message, Throwable cause) {
-        super(code, message, cause);
+    public ToolsException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public ToolsException(String code, String message) {
-        this(code, message, null);
+    public ToolsException(String message) {
+        this(message, null);
     }
 
 }

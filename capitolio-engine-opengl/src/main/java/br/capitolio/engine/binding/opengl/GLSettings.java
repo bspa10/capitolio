@@ -11,7 +11,7 @@ public abstract class GLSettings extends AbstractSettings {
 
     private static String vscode;
     public static void setVertexShaderCode(String code) {
-        LOGGER.debug("Configuring Vertex Shader Code");
+        LOGGER.debug("Configuring Vertex ShaderProgram Code");
         vscode = code;
     }
     public static String getVertexShaderCode(){
@@ -20,7 +20,7 @@ public abstract class GLSettings extends AbstractSettings {
 
     private static String fscode;
     public static void setFragmentShaderCode(String code) {
-        LOGGER.debug("Configuring Fragment Shader Code");
+        LOGGER.debug("Configuring Fragment ShaderProgram Code");
         fscode = code;
     }
     public static String getFragmentShaderCode(){

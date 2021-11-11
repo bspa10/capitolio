@@ -3,6 +3,7 @@ package br.capitolio.engine;
 import br.capitolio.engine.core.AbstractSettings;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
+import org.joml.Math;
 import org.joml.Vector2i;
 
 public abstract class EngineSettings extends AbstractSettings {
@@ -58,4 +59,29 @@ public abstract class EngineSettings extends AbstractSettings {
     public static void setFramerate(long framerate) {
         EngineSettings.framerate = framerate;
     }
+
+    private static float fieldOfView = Math.toRadians(60.0f);
+    public static float getFieldOfView() {
+        return fieldOfView;
+    }
+    public static void setFieldOfView(float fieldOfView) {
+        EngineSettings.fieldOfView = Math.toRadians(fieldOfView);
+    }
+
+    private static float zNear = 0.01f;
+    public static float getzNear() {
+        return zNear;
+    }
+    public static void setzNear(float zNear) {
+        EngineSettings.zNear = zNear;
+    }
+
+    private static float zFar = 1000f;
+    public static float getzFar() {
+        return zFar;
+    }
+    public static void setzFar(float zFar) {
+        EngineSettings.zFar = zFar;
+    }
+
 }

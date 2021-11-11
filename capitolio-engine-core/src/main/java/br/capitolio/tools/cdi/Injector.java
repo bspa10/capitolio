@@ -25,7 +25,7 @@ public abstract class Injector {
 
     public static void register(InjectionContext context) {
         if (context instanceof DefaultContext) {
-            throw new CDIException("", "Default Context already registered");
+            throw new CDIException("Default Context already registered");
         }
 
         contexts.add(context);
@@ -54,6 +54,6 @@ public abstract class Injector {
             }
         }
 
-        throw new CDIException("", "Target [%s] not found".formatted(klass.getCanonicalName()));
+        throw new CDIException("Target [%s] not found".formatted(klass.getCanonicalName()));
     }
 }

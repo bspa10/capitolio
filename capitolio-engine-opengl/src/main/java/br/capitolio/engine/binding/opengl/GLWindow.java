@@ -74,9 +74,9 @@ public final class GLWindow extends Window {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_STENCIL_TEST);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
+//        GL11.glEnable(GL11.GL_STENCIL_TEST);
+//        GL11.glEnable(GL11.GL_CULL_FACE);
+//        GL11.glCullFace(GL11.GL_BACK);
 
         GLFW.glfwSetKeyCallback(window,(window, key, scancode, action, mods) -> {
             if (action == GLFW.GLFW_REPEAT)
@@ -148,13 +148,15 @@ public final class GLWindow extends Window {
     }
 
     @Override
-    public Matrix4f updateProjection() {
-        return projection.setPerspective(FOV, getAspectRatio(), Z_NEAR, Z_FAR);
-    }
-
-    @Override
-    public Matrix4f updateProjection(Matrix4f matrix, int width, int height) {
-        return matrix.setPerspective(FOV, (float) width / height, Z_NEAR, Z_FAR);
+    public Matrix4f getProjectionMatrix() {
+        return projection
+                .identity()
+                .perspective(
+                        EngineSettings.getFieldOfView(),
+                        getAspectRatio(),
+                        EngineSettings.getzNear(),
+                        EngineSettings.getzFar()
+                );
     }
 }
 
