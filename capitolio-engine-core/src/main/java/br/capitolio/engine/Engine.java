@@ -7,12 +7,9 @@ import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.core.render.backend.Renderer;
-import br.capitolio.engine.core.scene.Scene;
+import br.capitolio.engine.core.Scene;
+import br.capitolio.engine.gameplay.Camera;
 import br.capitolio.tools.cdi.Injector;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 public abstract class Engine {
     private static final Logger LOGGER = LoggerFactory.getLogger(Engine.class);
@@ -31,7 +28,6 @@ public abstract class Engine {
         }
 
         LOGGER.info("Starting the Game Engine");
-        render.setWindow(window);
         scene.setWindow(window);
         scene.setRenderer(render);
 

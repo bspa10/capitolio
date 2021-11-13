@@ -2,7 +2,7 @@ package br.capitolio.engine.core.input.action;
 
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.core.scene.Scene;
+import br.capitolio.engine.core.Scene;
 
 public abstract class AbstractAction {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAction.class);

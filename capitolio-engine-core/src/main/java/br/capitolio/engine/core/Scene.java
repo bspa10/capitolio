@@ -1,8 +1,8 @@
-package br.capitolio.engine.core.scene;
+package br.capitolio.engine.core;
 
 import br.capitolio.engine.EngineException;
-import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.profile.Profiler;
+import br.capitolio.engine.gameplay.Camera;
 import br.capitolio.engine.gameplay.GameObject;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
@@ -15,6 +15,7 @@ public abstract class Scene {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scene.class);
     private Window window;
     protected Renderer renderer;
+    protected final Camera camera = new Camera();
 
     private final List<GameObject> children = new ArrayList<>();
     public void addObject(GameObject go) {
@@ -49,6 +50,10 @@ public abstract class Scene {
         doUpdate();
 
         children.forEach(GameObject::update);
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     public final void render() {

@@ -3,7 +3,7 @@ package br.capitolio.engine.core.render.backend.shader;
 public enum Uniform {
 
     FRUSTUM("frustum"),
-    WORLD_MATRIX("worldMatrix"),
+    MODEL_VIEW_MATRIX("modelViewMatrix"),
     TEXTURE("f_texture");
 
     private final String name;

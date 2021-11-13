@@ -4,23 +4,13 @@ import br.capitolio.engine.EngineSettings;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.core.profile.Profiler;
-import org.joml.Matrix4f;
 
 public abstract class Window {
     private static final Logger LOGGER = LoggerFactory.getLogger(Window.class);
 
     protected long window;
 
-    protected boolean resize;
-    protected final Matrix4f frustum = new Matrix4f();;
-
-    public abstract void setViewPort(int bottom, int left);
-
     public abstract void setBgColor(float red, float green, float blue, float alfa);
-
-    public boolean isResize() {
-        return resize;
-    }
 
     protected abstract void doInit();
     public final void init() {
@@ -46,8 +36,6 @@ public abstract class Window {
     }
 
     public abstract void setTitle(String title);
-
-    public abstract Matrix4f getFrustum();
 
     public float getAspectRatio() {
         return (float) EngineSettings.getWindowSize().x / EngineSettings.getWindowSize().y;

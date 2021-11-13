@@ -8,6 +8,7 @@ import br.capitolio.engine.core.input.event.*;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.core.event.EventBus;
+import br.capitolio.engine.core.render.RendererSettings;
 import org.joml.Matrix4f;
 import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
@@ -74,7 +75,8 @@ public final class GLWindow extends Window {
 //        GL11.glEnable(GL11.GL_CULL_FACE);
 //        GL11.glCullFace(GL11.GL_BACK);
 
-        frustum
+        RendererSettings
+                .getFrustum()
                 .identity()
                 .perspective(
                         EngineSettings.getFieldOfView(),
@@ -97,7 +99,8 @@ public final class GLWindow extends Window {
         GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
             EngineSettings.getWindowSize().set(width, height);
 
-            frustum
+            RendererSettings
+                    .getFrustum()
                     .identity()
                     .perspective(
                             EngineSettings.getFieldOfView(),
@@ -106,7 +109,7 @@ public final class GLWindow extends Window {
                             EngineSettings.getzFar()
                     );
 
-            resize = true;
+            GL11.glViewport(0, 0, EngineSettings.getWindowSize().x, EngineSettings.getWindowSize().y);
         });
     }
 
@@ -148,11 +151,6 @@ public final class GLWindow extends Window {
     }
 
     @Override
-    public void setViewPort(int bottom, int left) {
-        GL11.glViewport(0, 0, EngineSettings.getWindowSize().x, EngineSettings.getWindowSize().y);
-    }
-
-    @Override
     protected void doRefresh() {
         GL11.glFlush();
         GLFW.glfwSwapBuffers(window);
@@ -178,9 +176,5 @@ public final class GLWindow extends Window {
         GLFW.glfwSetWindowTitle(window, title);
     }
 
-    @Override
-    public Matrix4f getFrustum() {
-        return frustum;
-    }
 }
 
