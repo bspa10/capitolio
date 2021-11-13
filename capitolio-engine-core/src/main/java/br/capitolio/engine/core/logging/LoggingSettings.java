@@ -3,20 +3,32 @@ package br.capitolio.engine.core.logging;
 public abstract class LoggingSettings {
     private LoggingSettings(){}
 
-    private static boolean trace = true;
+    private static boolean trace = false;
     public static boolean isTrace() {
         return trace;
     }
     public static void setTrace(boolean desired) {
-        trace = desired;
+        if (desired) {
+            warning = true;
+            info = true;
+            debug = true;
+            trace = true;
+        } else
+            trace = false;
     }
 
-    private static boolean debug = true;
+    private static boolean debug = false;
     public static boolean isDebug() {
         return debug;
     }
     public static void setDebug(boolean desired) {
-        debug = desired;
+        if (desired)
+            debug = true;
+
+         else {
+            debug = false;
+            trace = false;
+         }
     }
 
     private static boolean info = true;
@@ -24,7 +36,14 @@ public abstract class LoggingSettings {
         return info;
     }
     public static void setInfo(boolean desired) {
-        info = desired;
+        if (desired)
+            info = true;
+
+        else {
+            info = false;
+            debug = false;
+            trace = false;
+        }
     }
 
     private static boolean warning = true;
@@ -32,7 +51,15 @@ public abstract class LoggingSettings {
         return warning;
     }
     public static void setWarning(boolean desired) {
-        warning = desired;
+        if (desired)
+            warning = true;
+
+        else {
+            warning = false;
+            info = false;
+            debug = false;
+            trace = false;
+        }
     }
 
 }

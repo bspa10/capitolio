@@ -4,8 +4,8 @@ import br.capitolio.engine.core.input.constants.InputAction;
 import br.capitolio.engine.core.input.event.KeyboardEvent;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.event.AbstractEvent;
-import br.capitolio.engine.event.EventListener;
+import br.capitolio.engine.core.event.AbstractEvent;
+import br.capitolio.engine.core.event.EventListener;
 
 final class KeyboardEventListener implements EventListener<KeyboardEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyboardEventListener.class);

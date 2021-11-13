@@ -1,14 +1,15 @@
-package br.capitolio.engine.render;
+package br.capitolio.engine.core.render.backend;
 
 import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.profile.Profiler;
-import br.capitolio.engine.render.backend.mesh.Mesh;
+import br.capitolio.engine.core.render.RenderException;
+import br.capitolio.engine.core.render.backend.mesh.Mesh;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.engine.gameplay.GameObject;
 import br.capitolio.engine.core.scene.Scene;
-import br.capitolio.engine.render.backend.shader.ShaderProgram;
-import br.capitolio.engine.render.backend.shader.Uniform;
+import br.capitolio.engine.core.render.backend.shader.ShaderProgram;
+import br.capitolio.engine.core.render.backend.shader.Uniform;
 import br.capitolio.tools.cdi.Injector;
 
 public abstract class Renderer {
@@ -29,8 +30,9 @@ public abstract class Renderer {
         LOGGER.debug("Initializing");
         program.init();
 
+        program.createUniform(Uniform.TEXTURE);
+        program.createUniform(Uniform.FRUSTUM);
         program.createUniform(Uniform.WORLD_MATRIX);
-        program.createUniform(Uniform.PROJECTION_MATRIX);
 
         doInit();
     }
@@ -45,7 +47,7 @@ public abstract class Renderer {
 
         Profiler.mark("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
         program.bind();
-        program.setUniform(Uniform.PROJECTION_MATRIX, window.getProjectionMatrix());
+        program.setUniform(Uniform.FRUSTUM, window.getFrustum());
         scene.getChildren().forEach(this::render);
         program.unbind();
         Profiler.release("Renderer.render(%s)".formatted(scene.getClass().getTypeName()));
@@ -55,6 +57,7 @@ public abstract class Renderer {
     private void render(GameObject go) {
         if (go.getMesh() != null) {
             Profiler.mark("Renderer.render(%s)".formatted(go.getClass().getTypeName()));
+            program.setUniform(Uniform.TEXTURE, 0);
             program.setUniform(Uniform.WORLD_MATRIX, go.getWorldMatrix());
             doRender(go.getMesh());
             Profiler.release("Renderer.render(%s)".formatted(go.getClass().getTypeName()));

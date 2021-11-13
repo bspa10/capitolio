@@ -6,14 +6,14 @@ import br.capitolio.engine.core.profile.Profiler;
 import br.capitolio.engine.gameplay.GameObject;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.render.Renderer;
+import br.capitolio.engine.core.render.backend.Renderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Scene {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scene.class);
-    protected Window window;
+    private Window window;
     protected Renderer renderer;
 
     private final List<GameObject> children = new ArrayList<>();
@@ -47,12 +47,13 @@ public abstract class Scene {
     protected abstract void doUpdate();
     public final void update() {
         doUpdate();
+
+        children.forEach(GameObject::update);
     }
 
-    protected abstract void doRender();
     public final void render() {
         Profiler.mark("Scene.render()");
-        doRender();
+        renderer.render(this);
         Profiler.release("Scene.render()");
     }
 

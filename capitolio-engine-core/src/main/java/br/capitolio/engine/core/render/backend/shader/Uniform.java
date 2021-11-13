@@ -1,9 +1,10 @@
-package br.capitolio.engine.render.backend.shader;
+package br.capitolio.engine.core.render.backend.shader;
 
 public enum Uniform {
 
-    PROJECTION_MATRIX("projectionMatrix"),
-    WORLD_MATRIX("worldMatrix");
+    FRUSTUM("frustum"),
+    WORLD_MATRIX("worldMatrix"),
+    TEXTURE("f_texture");
 
     private final String name;
     Uniform(String name) {

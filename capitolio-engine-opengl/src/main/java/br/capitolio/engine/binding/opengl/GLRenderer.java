@@ -1,7 +1,7 @@
 package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.render.backend.mesh.Mesh;
-import br.capitolio.engine.render.Renderer;
+import br.capitolio.engine.core.render.backend.mesh.Mesh;
+import br.capitolio.engine.core.render.backend.Renderer;
 import org.lwjgl.opengl.*;
 
 public final class GLRenderer extends Renderer {
@@ -18,11 +18,14 @@ public final class GLRenderer extends Renderer {
         GL20.glEnableVertexAttribArray(GLMesh.COLOR);
         GL20.glEnableVertexAttribArray(GLMesh.TEXTURE);
 
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mesh.getTexture());
+
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 
-        GL20.glDisableVertexAttribArray(GLMesh.POSITION);
-        GL20.glDisableVertexAttribArray(GLMesh.COLOR);
         GL20.glDisableVertexAttribArray(GLMesh.TEXTURE);
+        GL20.glDisableVertexAttribArray(GLMesh.COLOR);
+        GL20.glDisableVertexAttribArray(GLMesh.POSITION);
         GL30.glBindVertexArray(0);
     }
 

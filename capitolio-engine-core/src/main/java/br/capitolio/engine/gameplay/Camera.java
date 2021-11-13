@@ -1,4 +1,4 @@
-package br.capitolio.engine.render.frontend.camera;
+package br.capitolio.engine.gameplay;
 
 import br.capitolio.engine.EngineException;
 import br.capitolio.engine.core.Window;

@@ -1,4 +1,4 @@
-package br.capitolio.engine.render.backend.shader;
+package br.capitolio.engine.core.render.backend.shader;
 
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
@@ -19,6 +19,7 @@ public abstract class ShaderProgram {
 
     public abstract void createUniform(Uniform uniform);
     public abstract void setUniform(Uniform uniform, Matrix4f value);
+    public abstract void setUniform(Uniform uniform, int value);
 
     protected abstract void doUnbind();
     public final void unbind() {

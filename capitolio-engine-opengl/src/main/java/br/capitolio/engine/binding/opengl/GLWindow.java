@@ -1,16 +1,18 @@
 package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.EngineSettings;
+import br.capitolio.engine.GlobalState;
 import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.input.constants.InputAction;
 import br.capitolio.engine.core.input.event.*;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.event.EventBus;
+import br.capitolio.engine.core.event.EventBus;
 import org.joml.Matrix4f;
 import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
@@ -52,11 +54,6 @@ public final class GLWindow extends Window {
         if (window == MemoryUtil.NULL)
             throw new GLException("Unable to create window");
 
-        GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
-            windowSize.set(width, height);
-            resize = true;
-        });
-
         if (maximized)
             GLFW.glfwMaximizeWindow(window);
         else {
@@ -70,14 +67,50 @@ public final class GLWindow extends Window {
         GLFW.glfwMakeContextCurrent(window);
 
         GL.createCapabilities();
-        GLFW.glfwShowWindow(window);
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearColor(1f, 0.0f, 1f, 0.0f);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 //        GL11.glEnable(GL11.GL_STENCIL_TEST);
 //        GL11.glEnable(GL11.GL_CULL_FACE);
 //        GL11.glCullFace(GL11.GL_BACK);
 
+        frustum
+                .identity()
+                .perspective(
+                        EngineSettings.getFieldOfView(),
+                        getAspectRatio(),
+                        EngineSettings.getzNear(),
+                        EngineSettings.getzFar()
+                );
+
+
+
+        setUpWindowCallbacks();
+        setUpInputCallbacks();
+
+        GLFW.glfwShowWindow(window);
+    }
+
+    private void setUpWindowCallbacks() {
+        GLFW.glfwSetWindowCloseCallback(window, (window) -> GlobalState.setShouldStop());
+
+        GLFW.glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
+            EngineSettings.getWindowSize().set(width, height);
+
+            frustum
+                    .identity()
+                    .perspective(
+                            EngineSettings.getFieldOfView(),
+                            getAspectRatio(),
+                            EngineSettings.getzNear(),
+                            EngineSettings.getzFar()
+                    );
+
+            resize = true;
+        });
+    }
+
+    private void setUpInputCallbacks() {
         GLFW.glfwSetKeyCallback(window,(window, key, scancode, action, mods) -> {
             if (action == GLFW.GLFW_REPEAT)
                 return;
@@ -106,8 +139,6 @@ public final class GLWindow extends Window {
 
             EventBus.post(new MousePositionEvent(position));
         });
-
-
     }
 
     @Override
@@ -122,7 +153,7 @@ public final class GLWindow extends Window {
     }
 
     @Override
-    protected void doRender() {
+    protected void doRefresh() {
         GL11.glFlush();
         GLFW.glfwSwapBuffers(window);
     }
@@ -148,15 +179,8 @@ public final class GLWindow extends Window {
     }
 
     @Override
-    public Matrix4f getProjectionMatrix() {
-        return projection
-                .identity()
-                .perspective(
-                        EngineSettings.getFieldOfView(),
-                        getAspectRatio(),
-                        EngineSettings.getzNear(),
-                        EngineSettings.getzFar()
-                );
+    public Matrix4f getFrustum() {
+        return frustum;
     }
 }
 

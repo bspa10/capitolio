@@ -1,8 +1,8 @@
 package br.capitolio.engine.core.input;
 
 import br.capitolio.engine.core.input.event.MousePositionEvent;
-import br.capitolio.engine.event.AbstractEvent;
-import br.capitolio.engine.event.EventListener;
+import br.capitolio.engine.core.event.AbstractEvent;
+import br.capitolio.engine.core.event.EventListener;
 
 final class MousePositionEventListener implements EventListener<MousePositionEvent> {
 

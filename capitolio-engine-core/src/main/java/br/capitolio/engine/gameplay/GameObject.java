@@ -1,18 +1,19 @@
 package br.capitolio.engine.gameplay;
 
-import br.capitolio.engine.render.backend.mesh.Mesh;
-import lombok.Getter;
-import lombok.Setter;
+import br.capitolio.engine.core.render.backend.mesh.Mesh;
+import br.capitolio.tools.reflection.Reflections;
 import org.joml.Math;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class GameObject {
-
-    private final List<GameObject> children = new ArrayList<>();
+public final class GameObject {
     private final Transform transform = new Transform();
+
+    private final List<Component> components = new ArrayList<>();
+    private final List<GameObject> children = new ArrayList<>();
     private final Matrix4f world = new Matrix4f();
     private Mesh mesh;
 
@@ -26,6 +27,17 @@ public class GameObject {
 
     public void setMesh(Mesh mesh) {
         this.mesh = mesh;
+    }
+
+    public void addComponent(Class<? extends Component> component) {
+        components.add(Reflections.Classes.newInstance(component, this));
+    }
+    public Optional<Component> getComponent(Class<? extends Component> component) {
+        for (var entry : components)
+            if (entry.getClass().isAssignableFrom(component))
+                return Optional.of(entry);
+
+        return Optional.empty();
     }
 
     public void addObject(GameObject go) {
@@ -43,5 +55,9 @@ public class GameObject {
                 .rotateY(Math.toRadians(transform.getRotation().y))
                 .rotateZ(Math.toRadians(transform.getRotation().z))
                 .scale(transform.getScale());
+    }
+
+    public void update() {
+        components.forEach(Component::onUpdate);
     }
 }

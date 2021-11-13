@@ -1,6 +1,6 @@
 package br.capitolio.engine.core.input.event;
 
-import br.capitolio.engine.event.AbstractEvent;
+import br.capitolio.engine.core.event.AbstractEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.joml.Vector2d;

@@ -1,9 +1,8 @@
-package br.capitolio.engine.event;
+package br.capitolio.engine.core.event;
 
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import br.capitolio.tools.reflection.Reflections;
-import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,33 +28,31 @@ public abstract class EventBus {
         listeners.get(typeName).add(Reflections.Classes.newInstance(klass));
     }
 
-    /**
-     * <p>
-     * Envia o evento para o listener mais específico possível.
-     * </p>
-     * <p>
-     *     Caso não se encontra o listener específico do evento, então
-     *     é navegada na hierarquia da própria classe (extends) em busca
-     *     de alguma classe que possa processar o event. Não sendo possível
-     *     processar o evento, o mesmo é descartado em silêncio.
-     * </p>
-     */
-    @SneakyThrows
     public static <E extends AbstractEvent> void post(E event) {
-        if (listeners.containsKey(event.getClass().getTypeName()))
-            for (var listener : listeners.get(event.getClass().getTypeName()))
-                listener.onEvent(event);
+        synchronized (EventBus.class) {
+            final var listener = findListener(event);
 
-        else {
+            if (listener != null)
+                listener.onEvent(event);
+        }
+    }
+
+    private static <E extends AbstractEvent> EventListener<? extends AbstractEvent> findListener(E event) {
+        final var eventTypeName = event.getClass().getTypeName();
+        if (listeners.containsKey(eventTypeName))
+            for (var listener : listeners.get(eventTypeName))
+                return listener;
+
+        else
             for (var parent : Reflections.Classes.getParents(event)) {
-                if (!listeners.containsKey(parent.getTypeName()))
+                final var parentTypeName = parent.getTypeName();
+                if (!listeners.containsKey(parentTypeName))
                     continue;
 
-                for (var listener : listeners.get(parent.getTypeName()))
-                    listener.onEvent(event);
-
-                break;
+                for (var listener : listeners.get(parentTypeName))
+                    return listener;
             }
-        }
+
+        return null;
     }
 }

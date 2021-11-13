@@ -1,6 +1,6 @@
-package br.capitolio.engine.render.backend.mesh;
+package br.capitolio.engine.core.render.backend.mesh;
 
-import br.capitolio.engine.render.backend.texture.Texture;
+import br.capitolio.engine.core.render.backend.Texture;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 
@@ -11,8 +11,9 @@ public abstract class Mesh {
 
     protected abstract void setVertices(Vertex[] vertices);
     protected abstract void setIndices(int[] indices);
-    protected abstract void setTexture(Texture texture);
+    public abstract void setTexture(Texture texture, float[] coords);
 
+    public abstract Integer getTexture();
     public abstract int getVertexCount();
 
     protected abstract void doInit();

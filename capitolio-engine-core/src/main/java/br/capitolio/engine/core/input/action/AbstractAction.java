@@ -14,7 +14,6 @@ public abstract class AbstractAction {
 
     protected abstract void doProcess();
     public final void process() {
-        LOGGER.trace("Executing [%s]", getClass().getCanonicalName());
         doProcess();
         setScene(null);
     }

@@ -1,8 +1,7 @@
-package br.capitolio.engine.render;
+package br.capitolio.engine.sdk.noop;
 
-import br.capitolio.engine.render.backend.mesh.Mesh;
-import br.capitolio.engine.render.backend.shader.Uniform;
-import org.joml.Matrix4f;
+import br.capitolio.engine.core.render.backend.Renderer;
+import br.capitolio.engine.core.render.backend.mesh.Mesh;
 
 public final class NullRenderer extends Renderer {
 

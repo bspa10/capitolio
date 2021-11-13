@@ -1,11 +1,11 @@
 package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.EngineSettings;
-import br.capitolio.engine.render.frontend.camera.Camera;
+import br.capitolio.engine.gameplay.Camera;
 import org.joml.Matrix4f;
 
 public class GLCamera extends Camera {
-    private Matrix4f projectionMatrix;
+    protected Matrix4f projectionMatrix;
 
 
     @Override

@@ -5,6 +5,9 @@ package br.capitolio.engine.core.logging;
  */
 public interface Logger {
 
+    /**
+     * Apresenta uma mensagem de erro fatal e encerra a JVM.
+     */
     void fatal (String message, Object ... args);
 
     void error (String message, Object ... args);

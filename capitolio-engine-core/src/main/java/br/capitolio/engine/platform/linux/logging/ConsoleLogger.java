@@ -31,6 +31,7 @@ public final class ConsoleLogger extends AbstractLogger implements Logger {
     @Override
     public void fatal(String message, Object... args) {
         log(LogLevel.FATAL, message, AnsiColor.RED, args);
+        System.exit(9);
     }
 
     @Override

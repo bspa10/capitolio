@@ -1,17 +1,16 @@
 package br.capitolio.engine;
 
-import br.capitolio.engine.core.AbstractSettings;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
 import org.joml.Math;
 import org.joml.Vector2i;
 
-public abstract class EngineSettings extends AbstractSettings {
+public abstract class EngineSettings {
     private static final Logger LOGGER = LoggerFactory.getLogger(EngineSettings.class);
 
     private EngineSettings(){}
 
-    private static final Vector2i windowSize = new Vector2i();
+    private static final Vector2i windowSize = new Vector2i(800, 600);
     public static Vector2i getWindowSize() {
         return windowSize;
     }

@@ -1,4 +1,4 @@
-package br.capitolio.engine.render;
+package br.capitolio.engine.core.render;
 
 import br.capitolio.engine.EngineException;
 

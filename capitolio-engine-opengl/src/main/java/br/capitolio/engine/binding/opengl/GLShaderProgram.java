@@ -2,9 +2,10 @@ package br.capitolio.engine.binding.opengl;
 
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.render.RenderException;
-import br.capitolio.engine.render.backend.shader.ShaderProgram;
-import br.capitolio.engine.render.backend.shader.Uniform;
+import br.capitolio.engine.core.render.RenderException;
+import br.capitolio.engine.core.render.backend.shader.ShaderProgram;
+import br.capitolio.engine.core.render.backend.shader.Uniform;
+import br.capitolio.engine.sdk.opengl.GLSettings;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -14,14 +15,14 @@ import org.lwjgl.system.MemoryUtil;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GLShader extends ShaderProgram  {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GLShader.class);
+public final class GLShaderProgram extends ShaderProgram  {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GLShaderProgram.class);
     private int pid;
     private int vid;
     private int fid;
     private final Map<Uniform, Integer> uniforms = new HashMap<>();
 
-    private GLShader(){}
+    private GLShaderProgram(){}
 
     @Override
     protected void doInit() {
@@ -96,7 +97,7 @@ public final class GLShader extends ShaderProgram  {
     public void createUniform(Uniform uniform) {
         final var uniformId = GL20.glGetUniformLocation(pid, uniform.getName());
         if (uniformId < 0)
-            throw new RenderException("Uniform not found");
+            throw new RenderException("Uniform [%s] not found".formatted(uniform.getName()));
 
         uniforms.put(uniform, uniformId);
     }
@@ -104,11 +105,17 @@ public final class GLShader extends ShaderProgram  {
     @Override
     public void setUniform(Uniform uniform, Matrix4f value) {
         try (final var stack = MemoryStack.stackPush()) {
-            final var buffer = stack.mallocFloat(16);
-            value.get(buffer);
-
-            GL20.glUniformMatrix4fv(uniforms.get(uniform), false, buffer);
+            GL20.glUniformMatrix4fv(
+                    uniforms.get(uniform),
+                    false,
+                    value.get(stack.mallocFloat(16))
+            );
         }
+    }
+
+    @Override
+    public void setUniform(Uniform uniform, int value) {
+        GL20.glUniform1i(uniforms.get(uniform), value);
     }
 
     @Override

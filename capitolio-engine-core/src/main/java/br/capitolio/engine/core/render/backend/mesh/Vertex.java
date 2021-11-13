@@ -1,4 +1,4 @@
-package br.capitolio.engine.render.backend.mesh;
+package br.capitolio.engine.core.render.backend.mesh;
 
 import lombok.Getter;
 import org.joml.Vector3f;

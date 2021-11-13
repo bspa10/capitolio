@@ -6,9 +6,13 @@ import br.capitolio.engine.core.time.Clock;
 import br.capitolio.engine.core.Window;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import br.capitolio.engine.render.Renderer;
+import br.capitolio.engine.core.render.backend.Renderer;
 import br.capitolio.engine.core.scene.Scene;
 import br.capitolio.tools.cdi.Injector;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public abstract class Engine {
     private static final Logger LOGGER = LoggerFactory.getLogger(Engine.class);
@@ -18,10 +22,11 @@ public abstract class Engine {
     private Scene scene;
     private final Renderer render = Injector.inject(Renderer.class);
     private final Window window = Injector.inject(Window.class);
+
     protected abstract void doStart();
     public final void start(Scene scene) {
         if (GlobalState.isRunning()) {
-            LOGGER.warn("Trying to start an ingoing game");
+            LOGGER.warn("Trying to start an on-going game");
             return;
         }
 
@@ -131,7 +136,7 @@ public abstract class Engine {
     private void render() {
         Profiler.mark("Engine.render()");
         scene.render();
-        window.render();
+        window.refresh();
         Profiler.release("Engine.render()");
     }
 

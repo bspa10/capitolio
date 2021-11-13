@@ -1,18 +1,14 @@
 package br.capitolio.engine.binding.opengl;
 
-import br.capitolio.engine.render.backend.mesh.Mesh;
-import br.capitolio.engine.render.backend.texture.Texture;
-import br.capitolio.engine.render.backend.mesh.Vertex;
+import br.capitolio.engine.core.render.backend.mesh.Mesh;
+import br.capitolio.engine.core.render.backend.Texture;
+import br.capitolio.engine.core.render.backend.mesh.Vertex;
 import br.capitolio.engine.core.logging.Logger;
 import br.capitolio.engine.core.logging.LoggerFactory;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 public final class GLMesh extends Mesh {
     private static final Logger LOGGER = LoggerFactory.getLogger(GLMesh.class);
@@ -24,9 +20,12 @@ public final class GLMesh extends Mesh {
 
     private Integer vao;
     private final Integer[] vbos = new Integer[4];
+    private Integer tid;
     private Vertex[] vertices;
     private int[] indices;
+
     private Texture texture;
+    private float[] texCoords;
 
     @Override
     protected void doInit() {
@@ -58,12 +57,24 @@ public final class GLMesh extends Mesh {
         }
         vbos[COLOR] = storeDate(BufferUtils.store(cData), GLMesh.COLOR, 3);
 
-        final var tData = new float[vertices.length * 2];
-        for (int i = 0; i < vertices.length; i++) {
-            tData[i * 2    ] = vertices[i].getPosition().x;
-            tData[i * 2 + 1] = vertices[i].getPosition().y;
+        if (texture != null) {
+            tid = GL11.glGenTextures();
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, tid);
+            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+
+//            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+
+            GL11.glTexImage2D(
+                    GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA,
+                    texture.getWidth(), texture.getHeight(), 0, GL11.GL_RGBA,
+                    GL11.GL_UNSIGNED_BYTE, texture.getBuffer()
+            );
+
+            GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+            vbos[TEXTURE] = storeDate(BufferUtils.store(texCoords), GLMesh.TEXTURE, 2);
         }
-        vbos[TEXTURE] = storeDate(BufferUtils.store(tData), GLMesh.TEXTURE, 2);
     }
 
     @Override
@@ -82,8 +93,14 @@ public final class GLMesh extends Mesh {
     }
 
     @Override
-    protected void setTexture(Texture texture) {
+    public void setTexture(Texture texture, float[] coords) {
         this.texture = texture;
+        texCoords = coords;
+    }
+
+    @Override
+    public Integer getTexture() {
+        return tid;
     }
 
     @Override
@@ -108,7 +125,13 @@ public final class GLMesh extends Mesh {
             return;
 
         LOGGER.debug("Destroying VAO [%s]", vao);
-        Arrays.stream(vbos).forEach(GL15::glDeleteBuffers);
+        for (var vbo : vbos)
+            if (vbo != null)
+                GL15.glDeleteBuffers(vbo);
+
+        if (tid != null)
+            GL11.glDeleteTextures(tid);
+
         GL30.glBindVertexArray(0);
         GL30.glDeleteVertexArrays(vao);
         vao = null;

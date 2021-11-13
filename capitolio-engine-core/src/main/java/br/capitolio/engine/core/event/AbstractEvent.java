@@ -1,4 +1,4 @@
-package br.capitolio.engine.event;
+package br.capitolio.engine.core.event;
 
 import lombok.Getter;
 

@@ -1,24 +1,26 @@
 package br.capitolio.engine;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public abstract class GlobalState {
     private GlobalState(){}
 
-    private static boolean running = false;
+    private static final AtomicBoolean running = new AtomicBoolean(false);
     public static boolean isRunning() {
-        return running;
+        return running.get();
     }
     static void setRunning() {
-        GlobalState.running = true;
+        GlobalState.running.getAndSet(true);
     }
     static void setStopped() {
-        GlobalState.running = false;
+        GlobalState.running.getAndSet(false);
     }
 
-    private static boolean shouldStop = false;
+    private static final AtomicBoolean shouldStop = new AtomicBoolean(false);
     public static boolean isShouldStop() {
-        return shouldStop;
+        return shouldStop.get();
     }
     public static void setShouldStop() {
-        GlobalState.shouldStop = true;
+        GlobalState.shouldStop.getAndSet(true);
     }
 }

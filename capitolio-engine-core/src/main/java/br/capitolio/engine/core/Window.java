@@ -12,11 +12,7 @@ public abstract class Window {
     protected long window;
 
     protected boolean resize;
-    protected final Matrix4f projection;
-
-    public Window() {
-        projection = new Matrix4f();
-    }
+    protected final Matrix4f frustum = new Matrix4f();;
 
     public abstract void setViewPort(int bottom, int left);
 
@@ -34,10 +30,10 @@ public abstract class Window {
 
     public abstract void hide();
 
-    protected abstract void doRender();
-    public final void render(){
+    protected abstract void doRefresh();
+    public final void refresh(){
         Profiler.mark("Window.render()");
-        doRender();
+        doRefresh();
         Profiler.release("Window.render()");
     }
 
@@ -51,7 +47,7 @@ public abstract class Window {
 
     public abstract void setTitle(String title);
 
-    public abstract Matrix4f getProjectionMatrix();
+    public abstract Matrix4f getFrustum();
 
     public float getAspectRatio() {
         return (float) EngineSettings.getWindowSize().x / EngineSettings.getWindowSize().y;

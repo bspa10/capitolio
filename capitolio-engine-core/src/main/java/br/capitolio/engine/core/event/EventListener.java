@@ -1,4 +1,4 @@
-package br.capitolio.engine.event;
+package br.capitolio.engine.core.event;
 
 public interface EventListener <E extends AbstractEvent>{
 

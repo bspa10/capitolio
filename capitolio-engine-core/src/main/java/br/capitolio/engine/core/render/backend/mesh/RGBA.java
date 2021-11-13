@@ -1,4 +1,4 @@
-package br.capitolio.engine.render.backend.mesh;
+package br.capitolio.engine.core.render.backend.mesh;
 
 public class RGBA {
     public static RGBA RED = new RGBA(1.0f, 0.0f, 0.0f);

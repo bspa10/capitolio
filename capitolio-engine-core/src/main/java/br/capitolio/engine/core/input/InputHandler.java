@@ -6,7 +6,7 @@ import br.capitolio.engine.core.input.action.InputCombination;
 import br.capitolio.engine.core.input.action.KeyBinding;
 import br.capitolio.engine.core.input.constants.KeyInput;
 import br.capitolio.engine.core.input.constants.MouseInput;
-import br.capitolio.engine.event.EventBus;
+import br.capitolio.engine.core.event.EventBus;
 import br.capitolio.tools.reflection.Reflections;
 import org.joml.Vector2d;
 
